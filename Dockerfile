@@ -17,6 +17,4 @@
     # Expose port (for local testing)
     EXPOSE 80
     CMD ["nginx", "-g", "daemon off;"]
-
-#File Name updated
     
