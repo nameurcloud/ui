@@ -1,0 +1,25 @@
+/* index.css */
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Light theme */
+.light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* Dark theme */
+.dark {
+  background-color: #121212;
+  color: #ffffff;
+}
