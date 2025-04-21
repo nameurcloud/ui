@@ -1,25 +1,26 @@
-# --- Build stage ---
-    FROM node:18-alpine AS builder
-    WORKDIR /app
-    
-    COPY package*.json ./
-    RUN npm install
-    
-    COPY . .
-    RUN npm run build
-    
-    # --- Production stage ---
-    FROM nginx:stable-alpine
-    
-    # Copy custom nginx config
-    COPY nginx.conf /etc/nginx/nginx.conf
-    
-    # Copy built files
-    COPY --from=builder /app/dist /usr/share/nginx/html
-    
-    # Expose 8080 (Cloud Run default)
-    EXPOSE 8080
-    
-    # Start nginx
-    CMD ["nginx", "-g", "daemon off;"]
-    
+# Step 1: Build the app
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+# Step 2: Serve with a lightweight HTTP server
+FROM node:18-alpine
+WORKDIR /app
+
+# Install "serve" to serve static files
+RUN npm install -g serve
+
+# Copy build from previous stage
+COPY --from=builder /app/dist ./dist
+
+# Set environment variable for Cloud Run
+ENV PORT 8080
+
+# Expose the port
+EXPOSE 8080
+
+# Start the app
+CMD ["serve", "-s", "dist", "-l", "8080"]
