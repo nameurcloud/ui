@@ -27,7 +27,7 @@ export const getToken = () => {
 };
 
 export const validateSession = async (route: string, token: string) => {
-  const res = await fetch(`http://127.0.0.1:8000/api/auth/${route}`, {
+  const res = await fetch(`${API_URL}/auth/${route}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
