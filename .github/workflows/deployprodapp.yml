@@ -30,7 +30,7 @@ jobs:
 
       - name: 📝 Write Environment Variables to .env.production
         run: |
-          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env
 
 
       - name: 🛠️ Build and Push Docker Image
