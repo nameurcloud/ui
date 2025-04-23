@@ -1,8 +1,8 @@
 const API_URL = import.meta.env.VITE_API_URL;
-import { getIdToken } from '../services/gcpToken'
+import { getBackendToken } from './tokenService';
 
 export const registerUser = async (email: string, password: string,fname: string,lname:string,mobile:string,dob:string) => {
-  const token = await getIdToken(API_URL);
+  const token = await getBackendToken();
   const res = await fetch(`${API_URL}/auth/register`, {
     method: 'POST',
     headers: { 
@@ -15,7 +15,7 @@ export const registerUser = async (email: string, password: string,fname: string
 };
 
 export const loginUser = async (email: string, password: string) => {
-  const token = await getIdToken(API_URL);
+  const token = await getBackendToken();
   const res = await fetch(`${API_URL}/auth/login`, {
     method: 'POST',
     headers: { 
