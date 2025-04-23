@@ -5,7 +5,10 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export async function getIdToken(targetAudience: string): Promise<string> {
   const auth = new GoogleAuth();
-  const idToken = await auth.fetchIdToken(targetAudience);
+  const client1 = await auth.getIdTokenClient(targetAudience);
+  const headers = await client1.getRequestHeaders();
+  const idToken = headers['Authorization']?.split(' ')[1];
+  if (!idToken) throw new Error('Failed to generate ID token');
   return idToken;
 }
 
