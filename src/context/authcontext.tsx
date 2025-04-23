@@ -1,5 +1,6 @@
 import  { createContext, useState, useEffect, ReactNode } from 'react';
 
+
 interface User {
   email: string;
   // Add more fields if your backend provides them

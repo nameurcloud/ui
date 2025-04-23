@@ -1,18 +1,35 @@
+
+
+import { GoogleAuth } from 'google-auth-library';
 const API_URL = import.meta.env.VITE_API_URL;
 
+export async function getIdToken(targetAudience: string): Promise<string> {
+  const auth = new GoogleAuth();
+  const idToken = await auth.fetchIdToken(targetAudience);
+  return idToken;
+}
+
 export const registerUser = async (email: string, password: string,fname: string,lname:string,mobile:string,dob:string) => {
+  const token = await getIdToken(API_URL);
   const res = await fetch(`${API_URL}/auth/register`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization' : `Bearer ${token}`,
+    },
     body: JSON.stringify({ email, password,fname,lname,mobile,dob })
   });
   return res;
 };
 
 export const loginUser = async (email: string, password: string) => {
+  const token = await getIdToken(API_URL);
   const res = await fetch(`${API_URL}/auth/login`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization' : `Bearer ${token}`,
+    },
     body: JSON.stringify({ email, password })
   });
   return res;
