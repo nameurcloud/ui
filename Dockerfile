@@ -18,7 +18,7 @@ WORKDIR /app
 
 # Install dependencies
 COPY package*.json ./
-RUN npm install --production
+RUN npm install 
 
 # Install ts-node for running TypeScript server
 RUN npm install -g ts-node typescript
