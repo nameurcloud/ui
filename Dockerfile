@@ -8,29 +8,26 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
-RUN npm run build   # builds frontend to /dist
+RUN npm run build   # Builds Vite app to /dist
 
 # ========================
-# Step 2: Run Express server
+# Step 2: Run Express + Serve Frontend
 # ========================
 FROM node:18-alpine
 WORKDIR /app
 
-# Install dependencies
 COPY package*.json ./
-RUN npm install 
+RUN npm install --production
 
-# Install ts-node for running TypeScript server
+# Install Express-related dependencies globally
 RUN npm install -g ts-node typescript
 
-# Copy server (TypeScript) and built frontend
+# Copy built frontend and server code
 COPY --from=builder /app/dist ./dist
 COPY ./server ./server
 COPY ./tsconfig.json ./
 
-# Set environment variable for Cloud Run
-ENV PORT 8080
+ENV PORT=8080
 EXPOSE 8080
 
-# Start Express (this should also serve frontend + proxy API)
 CMD ["ts-node", "server/index.ts"]
