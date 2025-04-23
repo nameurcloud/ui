@@ -1,21 +1,5 @@
 const API_URL = import.meta.env.VITE_API_URL;
-
-export async function getIdToken(targetAudience: string): Promise<string> {
-  const res = await fetch(
-    `https://metadata/computeMetadata/v1/instance/service-accounts/default/identity?audience=${targetAudience}`,
-    {
-      headers: {
-        "Metadata-Flavor": "Google",
-      },
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error(`Failed to get ID token: ${res.statusText}`);
-  }
-
-  return res.text();
-}
+import { getIdToken } from '../services/gcpToken'
 
 export const registerUser = async (email: string, password: string,fname: string,lname:string,mobile:string,dob:string) => {
   const token = await getIdToken(API_URL);
