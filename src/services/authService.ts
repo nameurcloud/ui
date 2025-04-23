@@ -1,15 +1,20 @@
-
-
-import { GoogleAuth } from 'google-auth-library';
 const API_URL = import.meta.env.VITE_API_URL;
 
 export async function getIdToken(targetAudience: string): Promise<string> {
-  const auth = new GoogleAuth();
-  const client1 = await auth.getIdTokenClient(targetAudience);
-  const headers = await client1.getRequestHeaders();
-  const idToken = headers['Authorization']?.split(' ')[1];
-  if (!idToken) throw new Error('Failed to generate ID token');
-  return idToken;
+  const res = await fetch(
+    `http://metadata/computeMetadata/v1/instance/service-accounts/default/identity?audience=${targetAudience}`,
+    {
+      headers: {
+        "Metadata-Flavor": "Google",
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to get ID token: ${res.statusText}`);
+  }
+
+  return res.text();
 }
 
 export const registerUser = async (email: string, password: string,fname: string,lname:string,mobile:string,dob:string) => {
