@@ -7,7 +7,10 @@ const app = express();
 const auth = new GoogleAuth();
 
 const allowedOrigins = [
-  '*',
+  'https://www.nameurcloud.com',
+  'http://www.nameurcloud.com',
+  'https://nameurcloud.com',
+  'http://nameurcloud.com'
 ];
 const corsOptions = {
   origin: function (origin, callback) {
@@ -16,7 +19,8 @@ const corsOptions = {
     } else {
       callback(new Error('Not allowed by CORS'));
     }
-  }
+  },
+  credentials: true,
 };
 // Use the CORS middleware with specified options
 app.use(cors(corsOptions)); // Enable CORS for the allowed origin only.
