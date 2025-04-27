@@ -1,7 +1,7 @@
 # ========================
 # Step 1: Build Vite app
 # ========================
-FROM node:18-alpine AS builder
+FROM node:23-alpine AS builder
 WORKDIR /app
 
 COPY package*.json ./
@@ -11,23 +11,24 @@ COPY . .
 RUN npm run build   # Builds Vite app to /dist
 
 # ========================
-# Step 2: Run Express + Serve Frontend
+# Step 2: Serve Frontend + Secure Proxy (Express)
 # ========================
-FROM node:18-alpine
+FROM node:23-alpine
+
 WORKDIR /app
 
+# Only runtime dependencies (smaller final image)
 COPY package*.json ./
-RUN npm install --production
+RUN npm install express http-proxy-middleware google-auth-library express-static-gzip
 
-# Install Express-related dependencies globally
-RUN npm install -g ts-node typescript
-
-# Copy built frontend and server code
+# Copy built Vite app
 COPY --from=builder /app/dist ./dist
-COPY ./server ./server
-COPY ./tsconfig.json ./
 
-ENV PORT=8080
+# Copy proxy server code
+COPY ./src/services/proxy.js ./proxy.js
+
+# Expose the port
 EXPOSE 8080
 
-CMD ["ts-node", "server/index.ts"]
+# Start Express server
+CMD ["node", "proxy.js"]
