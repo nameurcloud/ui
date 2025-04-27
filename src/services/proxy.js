@@ -23,11 +23,11 @@ async function attachIdToken(req, res, next) {
 }
 
 // Proxy API requests to backend
-app.use('/api', attachIdToken, createProxyMiddleware({
-  target: BACKEND_URL,
-  changeOrigin: true,
-  pathRewrite: { '^/api': '' },
-}));
+//app.use('/api', attachIdToken, createProxyMiddleware({
+//  target: BACKEND_URL,
+//  changeOrigin: true,
+//  pathRewrite: { '^/api': '' },
+//}));
 
 // Serve frontend static files
 app.use('/', expressStaticGzip('dist', {
