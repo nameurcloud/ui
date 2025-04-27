@@ -1,13 +1,16 @@
 import React from 'react';
-import { Button, Box, Paper, Typography } from '@mui/material';
+import { Button, Box, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
 
 const HEADER_HEIGHT = 65;
 
-
-const Home: React.FC = () => (
+const Home: React.FC = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm')); 
+  
+return (
   <Box
     sx={{
-      height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+      minHeight: isMobile ? '100%' : `calc(90vh - ${HEADER_HEIGHT}px)`,
       width: '100%',
       display: 'flex',
       flexDirection: 'column',
@@ -163,7 +166,7 @@ const Home: React.FC = () => (
                 boxShadow: '0 6px 18px rgba(156, 39, 176, 0.6)',
               },
             }}
-            href='/pages/register'
+            href='register'
             
           >
             ✍️ Sign Up Now
@@ -172,6 +175,7 @@ const Home: React.FC = () => (
       </Paper>
     </Box>
   </Box>
-);
+)
+};
 
 export default Home;
