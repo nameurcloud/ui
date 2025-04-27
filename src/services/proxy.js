@@ -27,7 +27,7 @@ async function attachIdToken(req, res, next) {
 app.use('/api', attachIdToken, createProxyMiddleware({
   target: BACKEND_URL,
   changeOrigin: true,
-  pathRewrite: { '^/api/auth': '' },
+  pathRewrite: { '^/api': '' },
 }));
 
 // Serve frontend static files
