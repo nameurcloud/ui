@@ -6,6 +6,22 @@ import expressStaticGzip from 'express-static-gzip';
 const app = express();
 const auth = new GoogleAuth();
 
+const allowedOrigins = [
+  'https://www.nameurcloud.com',
+];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+};
+// Use the CORS middleware with specified options
+app.use(cors(corsOptions)); // Enable CORS for the allowed origin only.
+
+
 // 🔥 Replace with your actual backend URL
 const BACKEND_URL = 'https://api.nameurcloud.com/api';
 
