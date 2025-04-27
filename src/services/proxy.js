@@ -15,6 +15,7 @@ async function attachIdToken(req, res, next) {
     console.error("Nirmal get Token")
     const client = await auth.getIdTokenClient(BACKEND_URL);
     const headers = await client.getRequestHeaders();
+    console.log(headers)
     req.headers['Authorization'] = headers['Authorization'];
     next();
   } catch (err) {
