@@ -7,11 +7,12 @@ const app = express();
 const auth = new GoogleAuth();
 
 // 🔥 Replace with your actual backend URL
-const BACKEND_URL = 'https://backend-442566754193.asia-east1.run.app';
+const BACKEND_URL = 'https://api.nameurcloud.com/api';
 
 // Middleware to generate ID token
 async function attachIdToken(req, res, next) {
   try {
+    console.error("Nirmal get Token")
     const client = await auth.getIdTokenClient(BACKEND_URL);
     const headers = await client.getRequestHeaders();
     req.headers['Authorization'] = headers['Authorization'];
@@ -23,11 +24,11 @@ async function attachIdToken(req, res, next) {
 }
 
 // Proxy API requests to backend
-//app.use('/api', attachIdToken, createProxyMiddleware({
-//  target: BACKEND_URL,
-//  changeOrigin: true,
-//  pathRewrite: { '^/api': '' },
-//}));
+app.use('/api', attachIdToken, createProxyMiddleware({
+  target: BACKEND_URL,
+  changeOrigin: true,
+  pathRewrite: { '^/api': '' },
+}));
 
 // Serve frontend static files
 app.use('/', expressStaticGzip('dist', {
