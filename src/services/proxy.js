@@ -7,7 +7,7 @@ const app = express();
 const auth = new GoogleAuth();
 
 // 🔥 Replace with your actual backend URL
-const BACKEND_URL = 'https://api.nameurcloud.com';
+const BACKEND_URL = 'https://api.nameurcloud.com/api';
 
 // Middleware to generate ID token
 async function attachIdToken(req, res, next) {
