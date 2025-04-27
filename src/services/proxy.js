@@ -2,7 +2,7 @@ import express from 'express';
 import { GoogleAuth } from 'google-auth-library';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import expressStaticGzip from 'express-static-gzip';
-const cors = require('cors');
+import cors from 'cors';
 const app = express();
 const auth = new GoogleAuth();
 
