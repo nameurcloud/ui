@@ -7,7 +7,7 @@ const app = express();
 const auth = new GoogleAuth();
 
 const allowedOrigins = [
-  'https://www.nameurcloud.com',
+  '*',
 ];
 const corsOptions = {
   origin: function (origin, callback) {
