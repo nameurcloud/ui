@@ -56,7 +56,7 @@ const Register: React.FC = () => {
           message: 'Registration successful!',
           severity: 'success',
         });
-        setTimeout(() => navigate('/login'), 1000);
+        setTimeout(() => navigate('/pages/login'), 1000);
       } else if (res.status === 400) {
         setSnackbar({
           open: true,

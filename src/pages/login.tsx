@@ -88,7 +88,7 @@ const Login: React.FC = () => {
 
         <Typography variant="body2" textAlign="center">
           Don&apos;t have an account?{' '}
-          <MuiLink href="/register" underline="hover" color="primary" fontWeight={500}>
+          <MuiLink href="/pages/register" underline="hover" color="primary" fontWeight={500}>
             Register
           </MuiLink>
         </Typography>

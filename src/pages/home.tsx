@@ -163,7 +163,7 @@ const Home: React.FC = () => (
                 boxShadow: '0 6px 18px rgba(156, 39, 176, 0.6)',
               },
             }}
-            href='/register'
+            href='/pages/register'
             
           >
             ✍️ Sign Up Now
