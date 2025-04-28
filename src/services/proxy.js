@@ -3,9 +3,11 @@ import { GoogleAuth } from 'google-auth-library';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import expressStaticGzip from 'express-static-gzip';
 import cors from 'cors';
+
 const app = express();
 const auth = new GoogleAuth();
 
+// CORS Setup
 const allowedOrigins = [
   'https://www.nameurcloud.com',
   'http://www.nameurcloud.com',
@@ -22,54 +24,46 @@ const corsOptions = {
   },
   credentials: true,
 };
-// Use the CORS middleware with specified options
-app.use(cors(corsOptions)); // Enable CORS for the allowed origin only.
+app.use(cors(corsOptions));
 
-
-// 🔥 Replace with your actual backend URL
+// 🔥 Backend base URL
 const BACKEND_URL = 'https://api.nameurcloud.com';
 
-// Middleware to generate ID token
+// Middleware to attach ID token
 async function attachIdToken(req, res, next) {
   try {
-    console.error("Generating ID token for request:", req.method, req.originalUrl);
+    console.log("Generating ID token for:", req.method, req.originalUrl);
 
     const client = await auth.getIdTokenClient(BACKEND_URL);
     const headers = await client.getRequestHeaders();
-    
-    console.error("Generated Authorization header:", headers['Authorization']);
+
+    console.log("Authorization header set:", headers['Authorization']);
 
     req.headers['Authorization'] = headers['Authorization'];
-    console.log(req.headers)
-    console.log(req.next)
-    console.log("going to proxy")
     next();
   } catch (err) {
-    console.error('Token generation failed:', err);
+    console.error('Failed to attach ID token:', err);
     res.status(500).send('Authentication error');
   }
 }
 
-// Proxy API requests to backend
-app.use('/api', (req, res, next) => {
-  console.log('Request received:', req.method, req.originalUrl);  // Log when the request is received
-  next();  // Pass control to the next middleware
-}, attachIdToken, (req, res, next) => {
-  console.log('Inside attachIdToken middleware');  // Log to see if we're inside this middleware
-  next();  // Pass control to the next middleware (proxy)
-}, createProxyMiddleware({
-  target: 'https://api.nameurcloud.com/api',
+// Proxy API requests
+app.use('/api', attachIdToken, createProxyMiddleware({
+  target: BACKEND_URL,
   changeOrigin: true,
+  pathRewrite: {
+    '^/api': '/api', // Keep /api prefix (optional, depending on your backend)
+  },
   onProxyReq: (proxyReq, req, res) => {
-    console.log('Forwarding request to backend:', req.originalUrl);  // Log the URL being forwarded
+    console.log('Forwarding to backend:', req.method, req.url);
   },
   onError: (err, req, res) => {
-    console.log('Proxy error:', err);  // Logs if the proxy request fails
+    console.error('Proxy error:', err);
     res.status(500).send('Proxy error');
   }
 }));
 
-// Serve frontend static files
+// Serve frontend
 app.use('/', expressStaticGzip('dist', {
   enableBrotli: true,
   orderPreference: ['br', 'gzip'],
@@ -78,9 +72,9 @@ app.use('/', expressStaticGzip('dist', {
   },
 }));
 
-// Health check endpoint (optional for Cloud Run)
+// Health check
 app.get('/healthz', (req, res) => res.status(200).send('ok'));
 
-// Start server
+// Start
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
