@@ -32,6 +32,7 @@ export const getToken = () => {
 
 export const validateSession = async (route: string, token: string) => {
   const res = await fetch(`${API_URL}/${route}`, {
+    method : 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
