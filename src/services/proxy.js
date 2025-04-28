@@ -49,16 +49,17 @@ async function attachIdToken(req, res, next) {
 }
 
 // Proxy API requests to backend
-app.use('/api', attachIdToken, createProxyMiddleware({
-  target: BACKEND_URL,          // Your Cloud Run backend URL
-  changeOrigin: true,            // Ensures proper handling of origin headers
-  pathRewrite: {                 // Rewrites the URL path
-    '^/api': '',                 // Removes the '/api' prefix from the request
-  },
+app.use('/api', (req, res, next) => {
+  console.log('Request received:', req.method, req.originalUrl);  // Log when the request is received
+  next();  // Pass control to the next middleware
+}, attachIdToken, (req, res, next) => {
+  console.log('Inside attachIdToken middleware');  // Log to see if we're inside this middleware
+  next();  // Pass control to the next middleware (proxy)
+}, createProxyMiddleware({
+  target: 'https://api.nameurcloud.com',
+  changeOrigin: true,
   onProxyReq: (proxyReq, req, res) => {
-    console.log("IN proxy")
-    console.log(req)
-    console.log('Forwarding request to backend:', req.originalUrl);
+    console.log('Forwarding request to backend:', req.originalUrl);  // Log the URL being forwarded
   },
   onError: (err, req, res) => {
     console.log('Proxy error:', err);  // Logs if the proxy request fails
