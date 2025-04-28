@@ -27,7 +27,7 @@ app.use(cors(corsOptions)); // Enable CORS for the allowed origin only.
 
 
 // 🔥 Replace with your actual backend URL
-const BACKEND_URL = 'api.nameurcloud.com';
+const BACKEND_URL = 'https://api.nameurcloud.com';
 
 // Middleware to generate ID token
 async function attachIdToken(req, res, next) {
