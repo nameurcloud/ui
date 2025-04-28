@@ -40,8 +40,6 @@ async function attachIdToken(req, res, next) {
     console.error("Generated Authorization header:", headers['Authorization']);
 
     req.headers['Authorization'] = headers['Authorization'];
-    console.log("REQ")
-    console.log(req)
     next();
   } catch (err) {
     console.error('Token generation failed:', err);
