@@ -51,9 +51,6 @@ async function attachIdToken(req, res, next) {
 app.use('/api', attachIdToken, createProxyMiddleware({
   target: BACKEND_URL,
   changeOrigin: true,
-  pathRewrite: {
-    '^/api': '/api', // Keep /api prefix (optional, depending on your backend)
-  },
   onProxyReq: (proxyReq, req, res) => {
     console.log('Forwarding to backend:', req.method, req.url);
   },
