@@ -40,6 +40,8 @@ async function attachIdToken(req, res, next) {
     console.error("Generated Authorization header:", headers['Authorization']);
 
     req.headers['Authorization'] = headers['Authorization'];
+    console.log(req.headers)
+    console.log(req.next)
     console.log("going to proxy")
     next();
   } catch (err) {
