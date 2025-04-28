@@ -32,10 +32,13 @@ const BACKEND_URL = 'https://api.nameurcloud.com';
 // Middleware to generate ID token
 async function attachIdToken(req, res, next) {
   try {
-    console.error("Nirmal get Token")
+    console.error("Generating ID token for request:", req.method, req.originalUrl);
+
     const client = await auth.getIdTokenClient(BACKEND_URL);
     const headers = await client.getRequestHeaders();
-    console.log(headers)
+    
+    console.error("Generated Authorization header:", headers['Authorization']);
+
     req.headers['Authorization'] = headers['Authorization'];
     next();
   } catch (err) {
