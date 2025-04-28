@@ -40,6 +40,7 @@ async function attachIdToken(req, res, next) {
     console.error("Generated Authorization header:", headers['Authorization']);
 
     req.headers['Authorization'] = headers['Authorization'];
+    console.log("going to proxy")
     next();
   } catch (err) {
     console.error('Token generation failed:', err);
@@ -55,6 +56,8 @@ app.use('/api', attachIdToken, createProxyMiddleware({
     '^/api': '',                 // Removes the '/api' prefix from the request
   },
   onProxyReq: (proxyReq, req, res) => {
+    console.log("IN proxy")
+    console.log(req)
     console.log('Forwarding request to backend:', req.originalUrl);
   }
 }));
