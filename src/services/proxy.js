@@ -27,7 +27,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // 🔥 Backend base URL
-const BACKEND_URL = 'api.nameurcloud.com';
+const BACKEND_URL = 'https://api.nameurcloud.com';
 
 // Middleware to attach ID token
 async function attachIdToken(req, res, next) {
