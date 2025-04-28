@@ -20,6 +20,7 @@ export const loginUser = async (email: string, password: string) => {
     },
     body: JSON.stringify({ email, password })
   });
+  console.log("NM : " + res)
   return res;
 };
 
