@@ -12,7 +12,6 @@ export const registerUser = async (email: string, password: string,fname: string
 };
 
 export const loginUser = async (email: string, password: string) => {
-  console.log(`${API_URL}/login`)
   const res = await fetch(`${API_URL}/login`, {
     method: 'POST',
     headers: { 
@@ -20,7 +19,6 @@ export const loginUser = async (email: string, password: string) => {
     },
     body: JSON.stringify({ email, password })
   });
-  console.log("NM : " + res.body)
   return res;
 };
 
@@ -35,8 +33,9 @@ export const getToken = () => {
 export const validateSession = async (route: string, token: string) => {
   const res = await fetch(`${API_URL}/${route}`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     },
+    body: JSON.stringify({ token })
   });
 
   if (!res.ok) {
