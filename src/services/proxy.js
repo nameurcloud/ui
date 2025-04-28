@@ -40,6 +40,7 @@ async function attachIdToken(req, res, next) {
     console.log("Authorization header set:", headers['Authorization']);
 
     req.headers['Authorization'] = headers['Authorization'];
+    console.log("Authorization header set:", req.headers['Authorization'] );
     next();
   } catch (err) {
     console.error('Failed to attach ID token:', err);
@@ -51,6 +52,9 @@ async function attachIdToken(req, res, next) {
 app.use('/api', attachIdToken, createProxyMiddleware({
   target: BACKEND_URL,
   changeOrigin: true,
+  pathRewrite: {
+    '^/api': '/api', // Keep '/api' in the path when forwarding
+  },
   onProxyReq: (proxyReq, req, res) => {
     console.log('Forwarding to backend:', req.method, req.url);
   },
