@@ -59,6 +59,10 @@ app.use('/api', attachIdToken, createProxyMiddleware({
     console.log("IN proxy")
     console.log(req)
     console.log('Forwarding request to backend:', req.originalUrl);
+  },
+  onError: (err, req, res) => {
+    console.log('Proxy error:', err);  // Logs if the proxy request fails
+    res.status(500).send('Proxy error');
   }
 }));
 
