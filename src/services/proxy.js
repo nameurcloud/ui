@@ -49,8 +49,14 @@ async function attachIdToken(req, res, next) {
 
 // Proxy API requests to backend
 app.use('/api', attachIdToken, createProxyMiddleware({
-  target: BACKEND_URL,
-  changeOrigin: true
+  target: BACKEND_URL,          // Your Cloud Run backend URL
+  changeOrigin: true,            // Ensures proper handling of origin headers
+  pathRewrite: {                 // Rewrites the URL path
+    '^/api': '',                 // Removes the '/api' prefix from the request
+  },
+  onProxyReq: (proxyReq, req, res) => {
+    console.log('Forwarding request to backend:', req.originalUrl);
+  }
 }));
 
 // Serve frontend static files
