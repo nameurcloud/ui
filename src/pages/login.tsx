@@ -22,8 +22,11 @@ const Login: React.FC = () => {
   const handleClose = () => setSnackbar({ ...snackbar, open: false });
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log("form submitting")
     e.preventDefault();
     const res = await loginUser(email, password);
+    console.log("form submitted")
+    console.log(res)
     if (res.ok) {
       const data = await res.json();
       localStorage.setItem('token', data.token);
