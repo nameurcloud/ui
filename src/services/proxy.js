@@ -56,7 +56,7 @@ app.use('/api', (req, res, next) => {
   console.log('Inside attachIdToken middleware');  // Log to see if we're inside this middleware
   next();  // Pass control to the next middleware (proxy)
 }, createProxyMiddleware({
-  target: 'https://api.nameurcloud.com',
+  target: 'https://api.nameurcloud.com/api',
   changeOrigin: true,
   onProxyReq: (proxyReq, req, res) => {
     console.log('Forwarding request to backend:', req.originalUrl);  // Log the URL being forwarded
