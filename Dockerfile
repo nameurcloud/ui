@@ -4,31 +4,40 @@
 FROM node:23-alpine AS builder
 WORKDIR /app
 
+# Install dependencies
 COPY package*.json ./
 RUN npm install
 
+# Copy source and build
 COPY . .
-RUN npm run build   # Builds Vite app to /dist
+RUN npm run build  # Output goes to /dist
+
 
 # ========================
-# Step 2: Serve Frontend + Secure Proxy (Express)
+# Step 2: Runtime image (Express server)
 # ========================
 FROM node:23-alpine
 
 WORKDIR /app
 
-# Only runtime dependencies (smaller final image)
+# Install only required runtime packages
 COPY package*.json ./
-RUN npm install express http-proxy-middleware google-auth-library express-static-gzip
+RUN npm install --omit=dev \
+    express \
+    express-static-gzip \
+    http-proxy-middleware \
+    google-auth-library
 
-# Copy built Vite app
+# Copy built app and proxy server
 COPY --from=builder /app/dist ./dist
-
-# Copy proxy server code
 COPY ./src/services/proxy.js ./proxy.js
 
-# Expose the port
+# Set environment variables (optional)
+ENV NODE_ENV=production
+ENV PORT=8080
+
+# Expose port for Cloud Run
 EXPOSE 8080
 
-# Start Express server
+# Run the Express server
 CMD ["node", "proxy.js"]
