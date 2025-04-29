@@ -3,8 +3,10 @@ import { GoogleAuth } from 'google-auth-library';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import expressStaticGzip from 'express-static-gzip';
 import cors from 'cors';
+import dotenv from 'dotenv';
 
-
+const mode = process.env.NODE_ENV || 'development';
+dotenv.config({ path: `.env.${mode}` });
 const app = express();
 const auth = new GoogleAuth();
 
@@ -13,7 +15,8 @@ const allowedOrigins = [
   'https://www.nameurcloud.com',
   'http://www.nameurcloud.com',
   'https://nameurcloud.com',
-  'http://nameurcloud.com'
+  'http://nameurcloud.com',
+  'http://localhost:5173'
 ];
 const corsOptions = {
   origin: function (origin, callback) {
@@ -28,10 +31,16 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // 🔥 Backend base URL
-const BACKEND_URL = 'https://api.nameurcloud.com';
+
+const BACKEND_URL = process.env.BACKEND_URL;
 
 // Middleware to attach ID token
 async function attachIdToken(req, res, next) {
+  if (process.env.SKIP_AUTH === 'true') {
+    console.log("⚠️ Skipping ID token (local dev mode)");
+    return next();
+  }
+  console.log("⚠️ With ID token (Production mode)");
   try {
     console.log("Generating ID token for:", req.method, req.originalUrl);
 
@@ -54,7 +63,7 @@ app.use('/api', attachIdToken, createProxyMiddleware({
   target: BACKEND_URL,
   changeOrigin: true,
   pathRewrite: {
-    '^/api': '/api', // Keep '/api' in the path when forwarding
+    '^/api': '', // Keep '/api' in the path when forwarding
   },
   onProxyReq: (proxyReq, req, res) => {
     console.log('Forwarding to backend:', req.method, req.url);
@@ -80,5 +89,5 @@ app.use('/', expressStaticGzip('dist', {
 app.get('/healthz', (req, res) => res.status(200).send('ok'));
 
 // Start
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.SERVER_PORT ;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
