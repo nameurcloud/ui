@@ -73,13 +73,7 @@ app.use('/', expressStaticGzip('dist', {
   },
 }));
 
-app.get('*', (req, res, next) => {
-  if (req.method === 'GET' && !req.originalUrl.startsWith('/api')) {
-    res.sendFile('index.html', { root: 'dist' });
-  } else {
-    next();
-  }
-});
+
 
 // Health check
 app.get('/healthz', (req, res) => res.status(200).send('ok'));
