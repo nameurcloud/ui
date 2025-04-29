@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../services/authService';
+import { Link } from 'react-router-dom';
 import {
   Snackbar,
   Alert,
@@ -91,7 +92,7 @@ const Login: React.FC = () => {
 
         <Typography variant="body2" textAlign="center">
           Don&apos;t have an account?{' '}
-          <MuiLink href="/register" underline="hover" color="primary" fontWeight={500}>
+          <MuiLink component={Link} to="register" underline="hover" color="primary" fontWeight={500}>
             Register
           </MuiLink>
         </Typography>
