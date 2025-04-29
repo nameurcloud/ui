@@ -9,8 +9,7 @@ import {
   Paper,
   TextField,
   Button,
-  Typography,
-  Link as MuiLink,
+  Typography
 } from '@mui/material';
 
 const HEADER_HEIGHT = 65;
@@ -92,9 +91,9 @@ const Login: React.FC = () => {
 
         <Typography variant="body2" textAlign="center">
           Don&apos;t have an account?{' '}
-          <MuiLink component={Link} to="register" underline="hover" color="primary" fontWeight={500}>
+          <Button component={Link} to="register" >
             Register
-          </MuiLink>
+          </Button>
         </Typography>
 
         <Snackbar
