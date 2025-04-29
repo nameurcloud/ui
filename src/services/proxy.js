@@ -3,7 +3,7 @@ import { GoogleAuth } from 'google-auth-library';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import expressStaticGzip from 'express-static-gzip';
 import cors from 'cors';
-const path = require('path');
+
 
 const app = express();
 const auth = new GoogleAuth();
@@ -74,9 +74,7 @@ app.use('/', expressStaticGzip('dist', {
   },
 }));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
+
 
 // Health check
 app.get('/healthz', (req, res) => res.status(200).send('ok'));
