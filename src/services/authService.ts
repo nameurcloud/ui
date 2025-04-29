@@ -27,7 +27,7 @@ export const logoutUser = () => {
 };
 
 export const getToken = () => {
-  return localStorage.getItem('token');
+  return {'token' : localStorage.getItem('token'), 'email' :  localStorage.getItem('email') };
 };
 
 export const validateSession = async (route: string, token: string) => {

@@ -30,6 +30,7 @@ const Login: React.FC = () => {
     if (res.ok) {
       const data = await res.json();
       localStorage.setItem('token', data.token);
+      localStorage.setItem('email', data.user);
       navigate('/insider/dashboard');
     } else {
       setSnackbar({ open: true, message: 'Login failed', severity: 'error' });

@@ -9,32 +9,28 @@ const Dashboard = () => {
 
   useEffect(() => {
     const checkSession = async () => {
-      const token = getToken();
+      const token = (getToken()).token;
       if (!token) {
         navigate("/login");
+        setError("Session expired or unauthorized");
         return;
+      }else{
+        setUser((getToken()).email)
       }
 
-      try {
-        const response = await validateSession("dashboard", token);
-        setUser(response.user);
-      } catch (err: any) {
-        setError("Session expired or unauthorized");
-        localStorage.removeItem("token");
-        navigate("/login");
-      }
+ 
     };
 
     checkSession();
   }, []);
 
   if (error) return <p>{error}</p>;
-  if (!user) return <p>Loading...</p>;
+ 
 
   return (
     <div style={{ padding: 20 }}>
       <h1>Dashboard</h1>
-      <p>Welcome back, {user.fname} {user.lname} ({user.email})!</p>
+      <p>Welcome back! {user}</p>
     </div>
   );
 };
