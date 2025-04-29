@@ -3,15 +3,9 @@ import { GoogleAuth } from 'google-auth-library';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import expressStaticGzip from 'express-static-gzip';
 import cors from 'cors';
-import path from 'path';
-import { fileURLToPath } from 'url';
 
 const app = express();
 const auth = new GoogleAuth();
-
-// These two lines are necessary for __dirname in ES module context
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // CORS Setup
 const allowedOrigins = [
@@ -58,6 +52,9 @@ async function attachIdToken(req, res, next) {
 app.use('/api', attachIdToken, createProxyMiddleware({
   target: BACKEND_URL,
   changeOrigin: true,
+  pathRewrite: {
+    '^/api': '/api', // Keep '/api' in the path when forwarding
+  },
   onProxyReq: (proxyReq, req, res) => {
     console.log('Forwarding to backend:', req.method, req.url);
   },
@@ -76,9 +73,7 @@ app.use('/', expressStaticGzip('dist', {
   },
 }));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
-});
+
 
 // Health check
 app.get('/healthz', (req, res) => res.status(200).send('ok'));
