@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getToken, validateSession } from "../../services/authService";
+import { getToken } from "../../services/authService";
 
 const Dashboard = () => {
   const [user, setUser] = useState<any>(null);
