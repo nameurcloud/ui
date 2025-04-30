@@ -4,6 +4,10 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 import expressStaticGzip from 'express-static-gzip';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const mode = process.env.NODE_ENV || 'development';
 dotenv.config({ path: `.env.${mode}` });
@@ -33,6 +37,11 @@ app.use(cors(corsOptions));
 // 🔥 Backend base URL
 
 const BACKEND_URL = process.env.BACKEND_URL;
+
+if (!BACKEND_URL) {
+  console.error("❌ BACKEND_URL is not defined. Check your environment files.");
+  process.exit(1);
+}
 
 // Middleware to attach ID token
 async function attachIdToken(req, res, next) {
@@ -87,6 +96,11 @@ app.use('/', expressStaticGzip('dist', {
 
 // Health check
 app.get('/healthz', (req, res) => res.status(200).send('ok'));
+
+//all
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../dist/index.html'));
+});
 
 // Start
 const PORT = process.env.SERVER_PORT ;
