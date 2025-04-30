@@ -45,6 +45,8 @@ if (!BACKEND_URL) {
 }else{
   console.log("🚀 BACKEND_URL used in proxy:", BACKEND_URL);
   console.log("__dirname:", __dirname); 
+  console.log("Current working directory:", process.cwd());
+
 }
 
 // Middleware to attach ID token
@@ -103,7 +105,9 @@ app.use((req, res, next) => {
 });
 
 app.get('*', (req, res) => {
-  res.sendFile('index.html', { root: path.join(__dirname, 'dist') });
+  const filePath = path.resolve(__dirname, 'dist', 'index.html');
+  console.log('Serving file from:', filePath);  // Log the absolute path to index.html
+  res.sendFile(filePath);
 });
 
 // Start
