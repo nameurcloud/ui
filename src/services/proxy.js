@@ -104,6 +104,7 @@ app.use((req, res, next) => {
   next();
 });
 
+//all
 app.use((req, res) => {
  const filePath = path.resolve(__dirname, 'dist', 'index.html');
  console.log('Serving file from:', filePath);  // Log the absolute path to index.html
