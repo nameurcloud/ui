@@ -101,7 +101,7 @@ app.get('/healthz', (req, res) => res.status(200).send('ok'));
 //all
 app.get('*', (req, res) => {
   console.log("Serving SPA fallback for:", req.originalUrl);
-  res.sendFile(path.resolve(__dirname, '../../dist/index.html'));
+  res.sendFile(path.resolve(__dirname, '../dist/index.html'));
 });
 
 // Start
