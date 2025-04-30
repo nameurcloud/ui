@@ -101,6 +101,9 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
+});
 
 // Start
 const PORT = process.env.SERVER_PORT ;
