@@ -104,13 +104,11 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('*', (req, res) => {
- // const filePath = path.resolve(__dirname, 'dist', 'index.html');
- // console.log('Serving file from:', filePath);  // Log the absolute path to index.html
- // res.sendFile(filePath);
- const filePath = '/app/dist/index.html';
-  console.log('Serving file from (hard-coded):', filePath);
-  res.sendFile(filePath);
+app.use((req, res) => {
+ const filePath = path.resolve(__dirname, 'dist', 'index.html');
+ console.log('Serving file from:', filePath);  // Log the absolute path to index.html
+ res.sendFile(filePath);
+
 });
 
 // Start
