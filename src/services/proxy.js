@@ -101,17 +101,8 @@ app.use('/', expressStaticGzip('dist', {
 app.get('/healthz', (req, res) => res.status(200).send('ok'));
 
 //all
-app.get('*', (req, res, next) => {
-  const url = req.originalUrl;
 
-  // Do not interfere with API or static requests
-  if (url.startsWith('/api') || url.startsWith('/assets') || url.includes('.')) {
-    return next();
-  }
 
-  console.log("Serving SPA fallback for:", url);
-  res.sendFile(path.resolve(__dirname, '../dist/index.html'));
-});
 // Start
 const PORT = process.env.SERVER_PORT ;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
