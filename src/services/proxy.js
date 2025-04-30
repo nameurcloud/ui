@@ -5,6 +5,7 @@ import expressStaticGzip from 'express-static-gzip';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
+import path from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -99,6 +100,7 @@ app.get('/healthz', (req, res) => res.status(200).send('ok'));
 
 //all
 app.get('*', (req, res) => {
+  console.log("Serving SPA fallback for:", req.originalUrl);
   res.sendFile(path.resolve(__dirname, '../../dist/index.html'));
 });
 
