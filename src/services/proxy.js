@@ -102,7 +102,7 @@ app.use((req, res, next) => {
 });
 
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
+  res.sendFile('index.html', { root: path.join(__dirname, 'dist') });
 });
 
 // Start
