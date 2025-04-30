@@ -99,7 +99,7 @@ app.get('/healthz', (req, res) => res.status(200).send('ok'));
 
 //all
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../dist/index.html'));
+  res.sendFile(path.resolve(__dirname, '../../dist/index.html'));
 });
 
 // Start
