@@ -58,11 +58,7 @@ async function attachIdToken(req, res, next) {
 
     const client = await auth.getIdTokenClient(BACKEND_URL);
     const headers = await client.getRequestHeaders();
-
-    console.log("Authorization header set:", headers['Authorization']);
-
     req.headers['Authorization'] = headers['Authorization'];
-    console.log("Authorization header set:", req.headers['Authorization'] );
     next();
   } catch (err) {
     console.error('Failed to attach ID token:', err);
@@ -100,7 +96,10 @@ app.use('/', expressStaticGzip('dist', {
 // Health check
 app.get('/healthz', (req, res) => res.status(200).send('ok'));
 
-//all
+app.use((req, res, next) => {
+  console.log(`[${req.method}] ${req.originalUrl}`);
+  next();
+});
 
 
 // Start
