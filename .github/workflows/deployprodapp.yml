@@ -44,5 +44,4 @@ jobs:
             --image asia-east1-docker.pkg.dev/nameurcloud/production/nameurcloud:$GITHUB_SHA \
             --region asia-east1 \
             --platform managed \
-            --allow-unauthenticated \
-            --set-env-vars "BACKEND_URL=https://api.nameurcloud.com"
+            --allow-unauthenticated
