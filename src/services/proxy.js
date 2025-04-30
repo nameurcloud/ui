@@ -43,7 +43,8 @@ if (!BACKEND_URL) {
   console.error("❌ BACKEND_URL is not defined. Check your environment files.");
   process.exit(1);
 }else{
-  console.log("🚀 BACKEND_URL used in proxy:", BACKEND_URL);;
+  console.log("🚀 BACKEND_URL used in proxy:", BACKEND_URL);
+  console.log("__dirname:", __dirname); 
 }
 
 // Middleware to attach ID token
