@@ -92,7 +92,7 @@ const Login: React.FC = () => {
 
         <Typography variant="body2" textAlign="center">
           Don&apos;t have an account?{' '}
-          <Button component={Link} to="register" >
+          <Button component={Link} to="/register" >
             Register
           </Button>
         </Typography>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuthGuard } from "../../hooks/useAuthGuard";
 import { getToken } from "../../services/authService";
 
-export default function DashboardLayout() {
+export default function Api() {
   useAuthGuard(); 
 
   const [user, setUser] = useState<string | null>(null);
@@ -14,7 +14,7 @@ export default function DashboardLayout() {
 
   return (
     <div style={{ padding: 20 }}>
-      <h1>Dashboard</h1>
+      <h1>API</h1>
       <p>Welcome back! {user}</p>
     </div>
   );

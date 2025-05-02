@@ -11,7 +11,7 @@ const Home: React.FC = () => {
   return (
     <Box
       sx={{
-        minHeight: isMobile ? '100%' : `calc(90vh - ${HEADER_HEIGHT}px)`,
+        minHeight: isMobile ? '100%' : `calc(100vh - ${HEADER_HEIGHT}px)`,
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
