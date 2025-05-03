@@ -35,10 +35,7 @@ export const useAuthGuard = () => {
       navigate("/logout");
       return;
     }
-
-    const path = location.pathname;
-    const fileName = path.substring(path.lastIndexOf("/") + 1);
-    navigator(fileName, navigate); // ✅ pass navigate safely
+    navigator(navigate); // ✅ pass navigate safely
 
   }, [location.pathname, navigate]);
 };
@@ -47,5 +44,5 @@ export const getToken = () => {
   const token = localStorage.getItem("token");
   if (!token) return null;
   const decoded = jwtDecode<JwtPayload>(token);
-  return { email: decoded.sub };
+  return { uid: decoded.sub };
 };

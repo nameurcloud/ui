@@ -27,10 +27,10 @@ export const logoutUser = () => {
   localStorage.removeItem('token');
 };
 
-export const navigator = (path: string, navigate: (to: string) => void) => {
+export const navigator = (navigate: (path: string) => void) => {
   const token = localStorage.getItem("token");
 
-  fetch(`${API_URL}/insider/${path}`, {
+  fetch(`${API_URL}/auth-check`, {
     method: "GET",
     headers: {
       "X-App-Auth": token || "",
@@ -53,7 +53,30 @@ export const navigator = (path: string, navigate: (to: string) => void) => {
     .catch((_error) => {
       localStorage.setItem("logoutmsg", "Error Validating Access. Please login.");
       navigate("/logout");
-      logoutUser
+      logoutUser();
       //console.error("Error:", error);
     });
+};
+
+export const UserProfile = async () => {
+  const token = localStorage.getItem("token");
+
+  try {
+    const response = await fetch(`${API_URL}/profile`, {
+      method: "GET",
+      headers: {
+        "X-App-Auth": token || "",
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Issue fetching profile");
+    }
+
+    const data = await response.json();
+    return data;  // or return data.profile if your backend wraps it that way
+  } catch (error) {
+    throw new Error("Error fetching profile: " + error);
+  }
 };
