@@ -1,49 +1,59 @@
-const API_URL = import.meta.env.VITE_API_URL;
-export const registerUser = async (email: string, password: string,fname: string,lname:string,mobile:string,dob:string,plan:string) => {
+const API_URL = import.meta.env.VITE_API_URL
+export const registerUser = async (
+  email: string,
+  password: string,
+  fname: string,
+  lname: string,
+  mobile: string,
+  dob: string,
+  plan: string
+) => {
   const res = await fetch(`${API_URL}/register`, {
     method: 'POST',
-    headers: { 
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ email, password,fname,lname,mobile,dob,plan })
-  });
-  return res;
-};
-
-export const loginUser = async (email: string, password: string) => {
-  const logoutmsg = localStorage.getItem("logoutmsg")
-  if(logoutmsg){ localStorage.removeItem("logoutmsg")}
-  const res = await fetch(`${API_URL}/login`, {
-    method: 'POST',
-    headers: { 
+    headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email, password })
-  });
-  return res;
-};
+    body: JSON.stringify({ email, password, fname, lname, mobile, dob, plan }),
+  })
+  return res
+}
+
+export const loginUser = async (email: string, password: string) => {
+  const logoutmsg = localStorage.getItem('logoutmsg')
+  if (logoutmsg) {
+    localStorage.removeItem('logoutmsg')
+  }
+  const res = await fetch(`${API_URL}/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, password }),
+  })
+  return res
+}
 
 export const logoutUser = () => {
-  localStorage.removeItem('token');
-};
+  localStorage.removeItem('token')
+}
 
 export const navigator = (path: string, navigate: (to: string) => void) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token')
 
   fetch(`${API_URL}/insider/${path}`, {
-    method: "GET",
+    method: 'GET',
     headers: {
-      "X-App-Auth": token || "",
-      "Content-Type": "application/json",
+      'X-App-Auth': token || '',
+      'Content-Type': 'application/json',
     },
   })
     .then((response) => {
       if (response.ok) {
-        return response.json();
+        return response.json()
       } else {
-        localStorage.setItem("logoutmsg", "Unauthorized Access. Please login.");
-        navigate("/logout");
-        logoutUser();
+        localStorage.setItem('logoutmsg', 'Unauthorized Access. Please login.')
+        navigate('/logout')
+        logoutUser()
         //throw new Error("Unauthorized");
       }
     })
@@ -51,9 +61,9 @@ export const navigator = (path: string, navigate: (to: string) => void) => {
       //console.log("Access granted:", data);
     })
     .catch((_error) => {
-      localStorage.setItem("logoutmsg", "Error Validating Access. Please login.");
-      navigate("/logout");
+      localStorage.setItem('logoutmsg', 'Error Validating Access. Please login.')
+      navigate('/logout')
       logoutUser
       //console.error("Error:", error);
-    });
-};
+    })
+}

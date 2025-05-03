@@ -1,37 +1,29 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../services/authService';
-import { Link } from 'react-router-dom';
-import {
-  Snackbar,
-  Alert,
-  Box,
-  Paper,
-  TextField,
-  Button,
-  Typography
-} from '@mui/material';
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { loginUser } from '../services/authService'
+import { Link } from 'react-router-dom'
+import { Snackbar, Alert, Box, Paper, TextField, Button, Typography } from '@mui/material'
 
-const HEADER_HEIGHT = 65;
+const HEADER_HEIGHT = 65
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'error' });
-  const navigate = useNavigate();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'error' })
+  const navigate = useNavigate()
 
-  const handleClose = () => setSnackbar({ ...snackbar, open: false });
+  const handleClose = () => setSnackbar({ ...snackbar, open: false })
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const res = await loginUser(email, password);
+    e.preventDefault()
+    const res = await loginUser(email, password)
     if (res.ok) {
-      const data = await res.json();
-      localStorage.setItem('token', data.token);
-      navigate('/insider/dashboard');
+      const data = await res.json()
+      localStorage.setItem('token', data.token)
+      navigate('/insider/dashboard')
     } else {
-      setSnackbar({ open: true, message: 'Login failed', severity: 'error' });
+      setSnackbar({ open: true, message: 'Login failed', severity: 'error' })
     }
-  };
+  }
 
   return (
     <Box
@@ -39,9 +31,9 @@ const Login: React.FC = () => {
         height: `calc(100vh - ${HEADER_HEIGHT}px)`,
         display: 'flex',
         justifyContent: 'center',
-        
+
         alignItems: 'center',
-        
+
         px: 2,
       }}
     >
@@ -54,7 +46,7 @@ const Login: React.FC = () => {
           maxWidth: 400,
           display: 'flex',
           flexDirection: 'column',
-          boxShadow : 20,
+          boxShadow: 20,
           gap: 2,
         }}
       >
@@ -88,7 +80,7 @@ const Login: React.FC = () => {
 
         <Typography variant="body2" textAlign="center">
           Don&apos;t have an account?{' '}
-          <Button component={Link} to="/register" >
+          <Button component={Link} to="/register">
             Register
           </Button>
         </Typography>
@@ -99,13 +91,17 @@ const Login: React.FC = () => {
           onClose={handleClose}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         >
-          <Alert onClose={handleClose} severity={snackbar.severity as 'error' | 'success'} variant="filled">
+          <Alert
+            onClose={handleClose}
+            severity={snackbar.severity as 'error' | 'success'}
+            variant="filled"
+          >
             {snackbar.message}
           </Alert>
         </Snackbar>
       </Paper>
     </Box>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
