@@ -15,6 +15,7 @@ import Faq from './pages/insider/faq'
 import Payment from './pages/insider/payment'
 import Recom from './pages/insider/recom'
 import Support from './pages/insider/support'
+import Profile from './pages/insider/profile'
 
 const App: React.FC = () => {
   const location = useLocation()
@@ -40,6 +41,7 @@ const App: React.FC = () => {
         <Route path="/insider/payment" element={<Payment />} />
         <Route path="/insider/recom" element={<Recom />} />
         <Route path="/insider/support" element={<Support />} />
+        <Route path="/insider/profile" element={<Profile />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>

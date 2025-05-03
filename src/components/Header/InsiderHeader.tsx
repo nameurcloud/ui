@@ -42,6 +42,11 @@ const Header: React.FC = () => {
     logoutUser()
     navigate('/')
   }
+
+  const handleMyAccount = () => {
+    navigate('/insider/profile')
+  }
+
   const [open, setOpen] = React.useState(false)
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen)
@@ -147,7 +152,7 @@ const Header: React.FC = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMyAccount}>My account</MenuItem>
       <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </Menu>
   )
