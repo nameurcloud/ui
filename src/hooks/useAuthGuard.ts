@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import { logoutUser } from "../services/authService";
+import { logoutUser, navigator } from "../services/authService";
+
 
 type JwtPayload = {
   sub: string;
@@ -15,29 +16,36 @@ export const useAuthGuard = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      localStorage.setItem("logoutmsg","Not Logged In");
+      localStorage.setItem("logoutmsg", "Not Logged In");
       navigate("/logout");
       return;
     }
 
     try {
       const decoded = jwtDecode<JwtPayload>(token);
-      console.log("User ID from token:", decoded.sub);
-      console.log("Exp from token:", decoded.exp*1000);
-      console.log("Time now : ", Date.now())
-      if (decoded.exp * 1000 < Date.now()) {
-        
-        localStorage.setItem("logoutmsg","Session Expired");
+      if (Number(decoded.exp) * 1000 < Date.now()) {
+        localStorage.setItem("logoutmsg", "Session Expired");
+        logoutUser();
         navigate("/logout");
-        logoutUser()
+        return;
       }
     } catch (err) {
-      
-      localStorage.setItem("logoutmsg","Unable to verify authention, Please login.");
+      localStorage.setItem("logoutmsg", "Unable to verify authentication. Please login.");
+      logoutUser();
       navigate("/logout");
-      logoutUser()
-      
-      
+      return;
     }
-  }, [location.pathname]);
+
+    const path = location.pathname;
+    const fileName = path.substring(path.lastIndexOf("/") + 1);
+    navigator(fileName, navigate); // ✅ pass navigate safely
+
+  }, [location.pathname, navigate]);
+};
+
+export const getToken = () => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+  const decoded = jwtDecode<JwtPayload>(token);
+  return { email: decoded.sub };
 };

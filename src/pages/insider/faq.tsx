@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { useAuthGuard } from "../../hooks/useAuthGuard";
-import { getToken } from "../../services/authService";
+import { getToken } from "../../hooks/useAuthGuard";
 
 export default function Faq() {
   useAuthGuard(); 
 
-  const [user, setUser] = useState<string | null>(null);
+  const [user, setEmail] = useState<string | null>(null);
 
   useEffect(() => {
-    const { email } = getToken();
-    setUser(email);
+    const emailid = getToken();
+    setEmail(emailid?.email ?? null); 
   }, []);
 
   return (
