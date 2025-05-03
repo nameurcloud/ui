@@ -32,6 +32,7 @@ jobs:
         run: |
           echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env
 
+
       - name: 🛠️ Build and Push Docker Image
         run: |
           docker build -t asia-east1-docker.pkg.dev/nameurcloud/production/nameurcloud:$GITHUB_SHA .

@@ -1,16 +1,16 @@
 // context/themecontext.tsx
 
-import React, { createContext, useContext, useState } from 'react'
-import { ThemeProvider as MuiThemeProvider, createTheme } from '@mui/material/styles'
+import React, { createContext, useContext, useState } from 'react';
+import { ThemeProvider as MuiThemeProvider, createTheme } from '@mui/material/styles';
 
-type Theme = 'light' | 'dark'
+type Theme = 'light' | 'dark';
 
 interface ThemeContextType {
-  theme: Theme
-  toggleTheme: () => void
+  theme: Theme;
+  toggleTheme: () => void;
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const getMuiTheme = (mode: Theme) =>
   createTheme({
@@ -25,16 +25,16 @@ const getMuiTheme = (mode: Theme) =>
           }
         : {}),
     },
-  })
+  });
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>('light')
+  const [theme, setTheme] = useState<Theme>('light');
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
-  }
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+  };
 
-  const muiTheme = getMuiTheme(theme)
+  const muiTheme = getMuiTheme(theme);
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
@@ -42,11 +42,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         <div className={theme}>{children}</div>
       </MuiThemeProvider>
     </ThemeContext.Provider>
-  )
-}
+  );
+};
 
 export const useTheme = (): ThemeContextType => {
-  const context = useContext(ThemeContext)
-  if (!context) throw new Error('useTheme must be used inside ThemeProvider')
-  return context
-}
+  const context = useContext(ThemeContext);
+  if (!context) throw new Error('useTheme must be used inside ThemeProvider');
+  return context;
+};

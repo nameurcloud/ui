@@ -18,8 +18,8 @@ import Support from './pages/insider/support'
 import Profile from './pages/insider/profile'
 
 const App: React.FC = () => {
-  const location = useLocation()
-  const isDashboardPage = location.pathname.startsWith('/insider')
+  const location = useLocation();
+  const isDashboardPage = location.pathname.startsWith("/insider");
 
   return (
     <>
@@ -46,7 +46,7 @@ const App: React.FC = () => {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
