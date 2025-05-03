@@ -37,33 +37,32 @@ export const logoutUser = () => {
   localStorage.removeItem('token')
 }
 
-export const navigator = (path: string, navigate: (to: string) => void) => {
+export const navigator = async (path: string, navigate: (to: string) => void) => {
   const token = localStorage.getItem('token')
 
-  fetch(`${API_URL}/insider/${path}`, {
-    method: 'GET',
-    headers: {
-      'X-App-Auth': token || '',
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((response) => {
-      if (response.ok) {
-        return response.json()
-      } else {
-        localStorage.setItem('logoutmsg', 'Unauthorized Access. Please login.')
-        navigate('/logout')
-        logoutUser()
-        //throw new Error("Unauthorized");
-      }
+  try {
+    const response = await fetch(`${API_URL}/insider/${path}`, {
+      method: 'GET',
+      headers: {
+        'X-App-Auth': token || '',
+        'Content-Type': 'application/json',
+      },
     })
-    .then((_data) => {
-      //console.log("Access granted:", data);
-    })
-    .catch((_error) => {
-      localStorage.setItem('logoutmsg', 'Error Validating Access. Please login.')
+
+    if (!response.ok) {
+      localStorage.setItem('logoutmsg', 'Unauthorized Access. Please login.')
+      logoutUser()
       navigate('/logout')
-      logoutUser
-      //console.error("Error:", error);
-    })
+      return null
+    }
+
+    const data = await response.json()
+    return data.profile // ✅ Return user profile
+  } catch (error) {
+    localStorage.setItem('logoutmsg', 'Error Validating Access. Please login.')
+    logoutUser()
+    navigate('/logout')
+    console.error('Error:', error)
+    return null
+  }
 }
