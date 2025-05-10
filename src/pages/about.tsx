@@ -1,11 +1,15 @@
 // src/pages/About.tsx
-import React from 'react';
+import  { useEffect } from 'react';
 
-const About: React.FC = () => (
+export default function About () {
+  useEffect(() => {
+      document.title = "Not Found";
+    }, []);
+
   <div>
     <h2>About Page</h2>
     <p>This is the about page of our app.</p>
   </div>
-);
+};
 
-export default About;
+

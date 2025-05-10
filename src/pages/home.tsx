@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Box, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
 
@@ -7,6 +7,9 @@ const HEADER_HEIGHT = 65;
 const Home: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+   useEffect(() => {
+    document.title = "Home";
+  }, []);
 
   return (
     <Box

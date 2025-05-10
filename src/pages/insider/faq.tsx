@@ -1,21 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAuthGuard } from "../../hooks/useAuthGuard";
-import { getToken } from "../../hooks/useAuthGuard";
 
 export default function Faq() {
   useAuthGuard(); 
 
-  const [user, setEmail] = useState<string | null>(null);
-
-  useEffect(() => {
-    const emailid = getToken();
-    setEmail(emailid?.email ?? null); 
+useEffect(() => {
+    document.title = "FaQ";
   }, []);
-
   return (
     <div style={{ padding: 20 }}>
       <h1>FAQ</h1>
-      <p>Welcome back! {user}</p>
+      <p>Welcome back! </p>
     </div>
   );
 }

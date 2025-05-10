@@ -1,5 +1,5 @@
 // src/pages/NotFound.tsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Box,
@@ -9,7 +9,11 @@ import {
 
 const HEADER_HEIGHT = 65;
 
+
 const NotFound: React.FC = () => {
+  useEffect(() => {
+    document.title = "Not Found";
+  }, []);
   return (
     <Box
     sx={{

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../services/authService';
 import { Link } from 'react-router-dom';
@@ -32,6 +32,9 @@ const Login: React.FC = () => {
       setSnackbar({ open: true, message: 'Login failed', severity: 'error' });
     }
   };
+   useEffect(() => {
+    document.title = "Login";
+  }, []);
 
   return (
     <Box
