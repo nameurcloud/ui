@@ -128,7 +128,7 @@ const Home: React.FC = () => {
 
               <Box
                 component="img"
-                src="/images/home3.png"
+                src="/images/home_1.png"
                 alt="Robot naming cloud resources"
                 sx={{
                   maxWidth: { xs: '100%', sm: 150 },

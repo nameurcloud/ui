@@ -242,7 +242,7 @@ const Header: React.FC = () => {
             {DrawerList}
           </Drawer>
           <IconButton size="large" edge="start" color="inherit" aria-label="logo" sx={{ mr: 2 }}>
-            <img src="/images/5.png" style={{ height: '40px' }} alt="Logo" />
+            <img src="/images/logo.png" style={{ height: '40px' }} alt="Logo" />
           </IconButton>
 
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
