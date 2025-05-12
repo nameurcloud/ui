@@ -25,8 +25,6 @@ import {
   useTheme,
   Box,
   Button,
-  Snackbar,
-  Alert,
   Skeleton
 } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
