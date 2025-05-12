@@ -60,9 +60,9 @@ export default function Config() {
   }, [])
 
   const theme = useTheme()
-  const [selectedProvider, setSelectedProvider] = useState('AWS')
+  const [selectedProvider, setSelectedProvider] = useState<keyof CloudConfig>('AWS')
   const [search, setSearch] = useState<Record<string, string>>({})
-  const [data, setData] = useState<CloudConfig>({})
+  const [data, setData] = useState<CloudConfig>()
   const [edited, setEdited] = useState<Record<string, EditedItem | undefined>>({})
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -121,6 +121,7 @@ export default function Config() {
     newCode: string
   ) => {
     if (!data) return
+
     const originalCode = data[selectedProvider][category][index].code
     const updated = structuredClone(data)
     updated[selectedProvider][category][index].code = newCode.toUpperCase()
