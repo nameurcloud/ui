@@ -4,7 +4,7 @@ export interface CloudConfig {
   AWS?: ProviderConfig;
   GCP?: ProviderConfig;
   Azure?: ProviderConfig;
-  [key: string]: ProviderConfig | undefined;
+  // Add more cloud providers if needed
 }
 
 interface ProviderConfig {
