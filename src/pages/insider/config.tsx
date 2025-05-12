@@ -62,7 +62,7 @@ export default function Config() {
   const theme = useTheme()
   const [selectedProvider, setSelectedProvider] = useState('AWS')
   const [search, setSearch] = useState<Record<string, string>>({})
-  const [data, setData] = useState<CloudConfig | null>(null)
+  const [data, setData] = useState()
   const [edited, setEdited] = useState<Record<string, EditedItem | undefined>>({})
   const [snackbar, setSnackbar] = useState({
     open: false,
