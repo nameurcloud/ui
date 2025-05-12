@@ -62,7 +62,7 @@ export default function Config() {
   const theme = useTheme()
   const [selectedProvider, setSelectedProvider] = useState('AWS')
   const [search, setSearch] = useState<Record<string, string>>({})
-  const [data, setData] = useState()
+  const [data, setData] = useState<CloudConfig>({})
   const [edited, setEdited] = useState<Record<string, EditedItem | undefined>>({})
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -92,7 +92,7 @@ export default function Config() {
   useEffect(() => {
     const fetchConfig = async () => {
       try {
-        const jsonout = await getUserConfigPattern()
+        const jsonout:CloudConfig = await getUserConfigPattern()
         setData(jsonout)
       } catch (error) {
         console.error('Error loading config:', error)
