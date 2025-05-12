@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNotification } from '../../context/NotificationContext';
 import LockIcon from '@mui/icons-material/Lock'
 import {
   getUserConfigPattern,
@@ -54,6 +55,7 @@ type EditedItem = {
 
 export default function Config() {
   useAuthGuard()
+  const { showNotification } = useNotification();
 
   useEffect(() => {
     document.title = 'Configuration'
@@ -64,11 +66,7 @@ export default function Config() {
   const [search, setSearch] = useState<Record<string, string>>({})
   const [data, setData] = useState<CloudConfig>()
   const [edited, setEdited] = useState<Record<string, EditedItem | undefined>>({})
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: '',
-    severity: 'success' as 'success' | 'error' | 'info' | 'warning'
-  })
+
   const [localUserPlan, setLocalUserPlan] = useState<string | null>(null)
 
   useEffect(() => {
@@ -79,13 +77,8 @@ export default function Config() {
     fetchPlan()
   }, [])
 
-  const showSnackbar = (message: string, severity: typeof snackbar.severity) => {
-    setSnackbar({ open: true, message, severity })
-  }
 
-  const handleSnackbarClose = () => {
-    setSnackbar((prev) => ({ ...prev, open: false }))
-  }
+
 
   const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
 
@@ -107,11 +100,11 @@ export default function Config() {
       const payload = { config: data }
       const response = await setUserConfigPattern(payload)
       if (!response.ok) throw new Error('Failed to save configuration')
-      showSnackbar('Configuration saved successfully!', 'success')
+      showNotification('Configuration saved successfully!', 'success')
       setEdited({})
     } catch (error) {
       console.error(error)
-      showSnackbar('Error saving configuration.', 'error')
+      showNotification('Error saving configuration.', 'error')
     }
   }
 
@@ -272,20 +265,7 @@ export default function Config() {
 
   return (
     <Box sx={{ p: 2 }}>
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={4000}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity={snackbar.severity}
-          sx={{ width: '100%' }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
+
 
       <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
         <Button
@@ -324,9 +304,6 @@ export default function Config() {
       </Paper>
 
       <Box sx={{ width: '100%', mb: 4 }}>
-        <Typography variant="subtitle1" gutterBottom>
-          {selectedProvider} Configuration
-        </Typography>
         {categories.map((category) => renderAccordion(category))}
       </Box>
 
