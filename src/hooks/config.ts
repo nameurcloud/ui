@@ -1,10 +1,10 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
 export interface CloudConfig {
-  AWS?: ProviderConfig;
-  GCP?: ProviderConfig;
-  Azure?: ProviderConfig;
-  // Add more cloud providers if needed
+  AWS?: ProviderConfig[];
+  GCP?: ProviderConfig[];
+  Azure?: ProviderConfig[];
+  [key: string]: ProviderConfig[] | undefined;
 }
 
 interface ProviderConfig {
