@@ -1,15 +1,15 @@
 // src/pages/About.tsx
-import  { useEffect } from 'react';
+import { useEffect } from 'react';
 
-export default function About () {
+export default function About() {
   useEffect(() => {
-      document.title = "Not Found";
-    }, []);
+    document.title = "About";
+  }, []);
 
-  <div>
-    <h2>About Page</h2>
-    <p>This is the about page of our app.</p>
-  </div>
-};
-
-
+  return (
+    <div>
+      <h2>About Page</h2>
+      <p>This is the about page of our app.</p>
+    </div>
+  );
+}
