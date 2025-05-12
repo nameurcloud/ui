@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import LockIcon from '@mui/icons-material/Lock' 
+import LockIcon from '@mui/icons-material/Lock'
 import {
   getUserConfigPattern,
   CloudConfig,
@@ -54,18 +54,10 @@ type EditedItem = {
 
 export default function Config() {
   useAuthGuard()
-  useEffect(() => {
-    document.title = "Configuration";
-  }, []);
-  const [localUserPlan, setLocalUserPlan] = useState<string | null>(null)
 
-useEffect(() => {
-  const fetchPlan = async () => {
-    const plan = await getPlan()
-    setLocalUserPlan(plan)
-  }
-  fetchPlan()
-}, [])
+  useEffect(() => {
+    document.title = 'Configuration'
+  }, [])
 
   const theme = useTheme()
   const [selectedProvider, setSelectedProvider] = useState('AWS')
@@ -77,8 +69,17 @@ useEffect(() => {
     message: '',
     severity: 'success' as 'success' | 'error' | 'info' | 'warning'
   })
+  const [localUserPlan, setLocalUserPlan] = useState<string | null>(null)
 
-  const showSnackbar = (message: string, severity: 'success' | 'error' | 'info' | 'warning') => {
+  useEffect(() => {
+    const fetchPlan = async () => {
+      const plan = await getPlan()
+      setLocalUserPlan(plan)
+    }
+    fetchPlan()
+  }, [])
+
+  const showSnackbar = (message: string, severity: typeof snackbar.severity) => {
     setSnackbar({ open: true, message, severity })
   }
 
@@ -114,7 +115,11 @@ useEffect(() => {
     }
   }
 
-  const handleCodeChange = (category: keyof CloudProviderData, index: number, newCode: string) => {
+  const handleCodeChange = (
+    category: keyof CloudProviderData,
+    index: number,
+    newCode: string
+  ) => {
     if (!data) return
     const originalCode = data[selectedProvider][category][index].code
     const updated = structuredClone(data)
@@ -139,14 +144,12 @@ useEffect(() => {
 
   const renderAccordion = (category: keyof CloudProviderData) => {
     if (!data) return null
-    const items = data[selectedProvider][category].filter((item:any) =>
+    const items = data[selectedProvider][category].filter((item) =>
       (search[category] || '') === ''
         ? true
         : item.name.toLowerCase().includes(search[category].toLowerCase())
     )
 
-
-     
     return (
       <Accordion key={category} sx={{ mb: 1 }}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -175,7 +178,7 @@ useEffect(() => {
           <TableContainer component={Paper} variant="outlined">
             <Table size="small">
               <TableBody>
-                {items.map((item:any, index:any) => {
+                {items.map((item, index) => {
                   const editKey = `${selectedProvider}-${category}-${index}`
                   const isChanged = Boolean(edited[editKey])
                   return (
@@ -237,43 +240,31 @@ useEffect(() => {
           height: '60vh',
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center',
-          textAlign: 'center'
+          alignItems: 'center'
         }}
       >
-        <Box
-  sx={{
-    p: 4,
-    height: '60vh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-  }}
->
-  <Paper
-    elevation={3}
-    sx={{
-      p: 4,
-      maxWidth: 400,
-      textAlign: 'center',
-      backgroundColor: theme.palette.mode === 'dark' ? '#2c2c2c' : '#fafafa',
-      borderRadius: 3,
-    }}
-  >
-    <LockIcon
-      sx={{ fontSize: 48, color: theme.palette.text.secondary, mb: 2 }}
-    />
-    <Typography variant="h6" color="text.secondary" gutterBottom>
-      Plan Name: <strong>{localUserPlan}</strong>
-    </Typography>
-    <Typography variant="body2" color="text.secondary">
-      Your current plan does not support this feature.
-      <br />
-      Upgrade to a premium plan to unlock full configuration access.
-    </Typography>
-  </Paper>
-</Box>
+        <Paper
+          elevation={3}
+          sx={{
+            p: 4,
+            maxWidth: 400,
+            textAlign: 'center',
+            backgroundColor: theme.palette.mode === 'dark' ? '#2c2c2c' : '#fafafa',
+            borderRadius: 3
+          }}
+        >
+          <LockIcon
+            sx={{ fontSize: 48, color: theme.palette.text.secondary, mb: 2 }}
+          />
+          <Typography variant="h6" color="text.secondary" gutterBottom>
+            Plan Name: <strong>{localUserPlan}</strong>
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Your current plan does not support this feature.
+            <br />
+            Upgrade to a premium plan to unlock full configuration access.
+          </Typography>
+        </Paper>
       </Box>
     )
   }
@@ -360,7 +351,7 @@ useEffect(() => {
             <TableBody>
               {changedItems.length > 0 ? (
                 changedItems.map((item, idx) => (
-                  <TableRow key={idx}>
+                  <TableRow key={`${item.name}-${idx}`}>
                     <TableCell sx={{ fontSize: '0.8rem' }}>{item.cloud}</TableCell>
                     <TableCell sx={{ fontSize: '0.8rem' }}>{item.category}</TableCell>
                     <TableCell sx={{ fontSize: '0.8rem' }}>{item.name}</TableCell>
