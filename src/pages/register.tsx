@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { useNavigate } from 'react-router-dom'
 import { registerUser } from '../services/authService'
 import {
@@ -16,7 +15,6 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
-  Tooltip,
 } from '@mui/material'
 import LabelWithTooltip from '../components/common/LabelWithTooltip'
 

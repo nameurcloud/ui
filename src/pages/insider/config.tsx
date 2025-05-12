@@ -139,7 +139,7 @@ useEffect(() => {
 
   const renderAccordion = (category: keyof CloudProviderData) => {
     if (!data) return null
-    const items = data[selectedProvider][category].filter((item) =>
+    const items = data[selectedProvider][category].filter((item:any) =>
       (search[category] || '') === ''
         ? true
         : item.name.toLowerCase().includes(search[category].toLowerCase())
@@ -175,7 +175,7 @@ useEffect(() => {
           <TableContainer component={Paper} variant="outlined">
             <Table size="small">
               <TableBody>
-                {items.map((item, index) => {
+                {items.map((item:any, index:any) => {
                   const editKey = `${selectedProvider}-${category}-${index}`
                   const isChanged = Boolean(edited[editKey])
                   return (
