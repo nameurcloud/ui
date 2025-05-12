@@ -7,7 +7,7 @@ export interface CloudConfig {
   [key: string]: ProviderConfig | undefined;
 }
 
-interface ProviderConfig {
+export interface ProviderConfig {
   regions: { name: string; code: string }[];
   resources: { name: string; code: string }[];
   environments: { name: string; code: string }[];
@@ -31,12 +31,10 @@ export const getUserConfigPattern = async (): Promise<CloudConfig> => {
 
     const data = await response.json();
 
-    // Make sure the pattern_config exists and has a valid shape
     if (!data.pattern_config) {
       throw new Error("Invalid response format: pattern_config missing.");
     }
 
-    // Optionally validate the data structure here (for better type safety)
     return data.pattern_config as CloudConfig;
 
   } catch (error: any) {
@@ -55,14 +53,13 @@ export const setUserConfigPattern = async (updatedconfig: { config?: CloudConfig
         "X-App-Auth": token || "",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(updatedconfig.config)
+      body: JSON.stringify(updatedconfig.config),
     });
-    console.log(updatedconfig.config)
+    console.log(updatedconfig.config);
     return response;
 
-
   } catch (error: any) {
-    console.error("Error fetching config:", error);
-    throw new Error("Error fetching config: " + (error.message || error));
+    console.error("Error saving config:", error);
+    throw new Error("Error saving config: " + (error.message || error));
   }
 };
