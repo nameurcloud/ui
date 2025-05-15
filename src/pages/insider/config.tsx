@@ -265,18 +265,9 @@ export default function Config() {
     <Box sx={{ p: 2 }}>
 
 
-      <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
-        <Button
-          variant="contained"
-          color="primary"
-          disabled={Object.keys(edited).length === 0}
-          onClick={handleSaveChanges}
-        >
-          Save All Changes
-        </Button>
-      </Box>
+      
 
-      <Paper variant="outlined" sx={{ mb: 3, mt: 2, p: 1 }}>
+
         <ToggleButtonGroup
           fullWidth
           value={selectedProvider}
@@ -299,12 +290,21 @@ export default function Config() {
             </ToggleButton>
           ))}
         </ToggleButtonGroup>
-      </Paper>
 
+       
       <Box sx={{ width: '100%', mb: 4 }}>
         {categories.map((category) => renderAccordion(category))}
       </Box>
-
+      <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={Object.keys(edited).length === 0}
+          onClick={handleSaveChanges}
+        >
+          Save All Changes
+        </Button>
+      </Box>
       <Box sx={{ width: '100%' }}>
         <Typography variant="subtitle1" gutterBottom>
           Changed Records

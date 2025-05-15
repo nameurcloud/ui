@@ -32,7 +32,7 @@ const Header: React.FC = () => {
             sx={{ mr: 2 }}
             component={Link} to="/"
           >
-         <img src="/images/logo.png" style={{ height: '40px' }} alt="Logo" />
+         <img src="/images/logo.png" style={{ height: '30px' }} alt="Logo" />
 
           </IconButton>
 

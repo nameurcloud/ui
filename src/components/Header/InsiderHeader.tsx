@@ -205,13 +205,19 @@ const Header: React.FC = () => {
         position="static"
         elevation={0}
         sx={{
-          backgroundColor: 'transparent',
+          background: theme === 'dark' ? '#000' : 'linear-gradient(45deg,rgba(147, 20, 225, 0.1) 10%,rgba(147, 20, 225, 0.1) 99%)',
+
           color: theme === 'dark' ? '#fff' : '#000',
+
+        height: 60,
+        paddingBottom : 0
+        
         }}
+        
       >
         <Toolbar>
           <IconButton
-            size="large"
+            size="small"
             edge="start"
             color="inherit"
             aria-label="menu"
@@ -241,11 +247,11 @@ const Header: React.FC = () => {
           >
             {DrawerList}
           </Drawer>
-          <IconButton size="large" edge="start" color="inherit" aria-label="logo" sx={{ mr: 2 }}>
-            <img src="/images/logo.png" style={{ height: '40px' }} alt="Logo" />
+          <IconButton size="small" edge="start" color="inherit" aria-label="logo" sx={{ mr: 2 }}>
+            <img src="/images/logo.png" style={{ height: '30px' }} alt="Logo" />
           </IconButton>
 
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography component="div" sx={{ flexGrow: 1 }}>
             Name Your Cloud
           </Typography>
 
@@ -255,14 +261,14 @@ const Header: React.FC = () => {
               {theme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
             </IconButton>
 
-            <IconButton size="large" color="inherit">
+            <IconButton size="small" color="inherit">
               <Badge>
                 <NotificationMenu />
               </Badge>
             </IconButton>
 
             <IconButton
-              size="large"
+              size="small"
               edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
@@ -275,7 +281,8 @@ const Header: React.FC = () => {
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
-              size="large"
+              size="small"
+
               aria-label="show more"
               aria-controls={mobileMenuId}
               aria-haspopup="true"
