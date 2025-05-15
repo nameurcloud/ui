@@ -3,12 +3,12 @@ import ErrorIcon from '@mui/icons-material/Error'
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom'
 import { green, red, grey } from '@mui/material/colors'
 import { useEffect, useState } from 'react'
-import { getToken, useAuthGuard } from '../../hooks/useAuthGuard'
+import { useAuthGuard } from '../../hooks/useAuthGuard'
 import { CloudConfig, getUserConfigPattern } from '../../hooks/config'
 import { useNotification } from '../../context/NotificationContext'
+import Grid from '@mui/material/Grid'
 import {
   Box,
-  Grid,
   FormControl,
   InputLabel,
   Select,
@@ -22,7 +22,7 @@ import {
   TableBody,
   Paper,
   Button,
-  TextField,
+  TextField
 } from '@mui/material'
 import { GeneratedName, setName, getName } from '../../hooks/names'
 import { getUserProfile } from '../../hooks/user'
@@ -154,10 +154,10 @@ export default function Names() {
 
   return (
     <Box sx={{ p: 3, height: '100%', overflow: 'hidden' }}>
-      <Grid container spacing={4} sx={{ height: '100%' }}>
+      <Grid container spacing={4} sx={{ height: '100%' }} >
 
-        <Grid item xs={12} md={6}>
-          <Box sx={{ minWidth: 500, width: '100%' }}>
+        <Grid item xs={12} md={6} {...({} as any)}>
+          <Box sx={{ minWidth: 500, width: '100%' }} >
             <FormControl fullWidth margin="dense" size="small">
               <InputLabel>Cloud Provider</InputLabel>
               <Select
@@ -247,7 +247,7 @@ export default function Names() {
         </Grid>
 
 
-        <Grid item xs={12} md={6} width={'60%'} >
+        <Grid item xs={12} md={6} width={'60%'} {...({} as any)}>
           <Box sx={{  flex: 1 }}>
             <TextField
               fullWidth
