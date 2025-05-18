@@ -58,8 +58,7 @@ export default function Api() {
   const [apiKeys, setApiKeys] = useState<any[]>([])
   const [generatedKey, setGeneratedKey] = useState<string | null>(null)
   const [sortBy, setSortBy] = useState<'key' | 'email' | 'expiry' | 'permissions'>('email')
-const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc')
-
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc')
 
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(0)
@@ -130,14 +129,14 @@ const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc')
   }, [])
 
   const handleSort = (column: typeof sortBy) => {
-  if (sortBy === column) {
-    // toggle direction
-    setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
-  } else {
-    setSortBy(column)
-    setSortDirection('asc') // default to ascending when new column selected
+    if (sortBy === column) {
+      // toggle direction
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+    } else {
+      setSortBy(column)
+      setSortDirection('asc') // default to ascending when new column selected
+    }
   }
-}
 
   const handlePermissionChange = (perm: string) => {
     setPermissions((prev) =>
@@ -173,27 +172,26 @@ const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc')
     }
   }
 
-const sortedFilteredKeys = useMemo(() => {
-  const lowerSearch = search.toLowerCase()
-  let filtered = apiKeys.filter((k) =>
-    Object.values(k).join(' ').toLowerCase().includes(lowerSearch)
-  )
+  const sortedFilteredKeys = useMemo(() => {
+    const lowerSearch = search.toLowerCase()
+    let filtered = apiKeys.filter((k) =>
+      Object.values(k).join(' ').toLowerCase().includes(lowerSearch)
+    )
 
-  const compareFns: Record<typeof sortBy, (a: any, b: any) => number> = {
-    key: (a, b) => a.partialKey.localeCompare(b.partialKey),
-    email: (a, b) => a.email.localeCompare(b.email),
-    expiry: (a, b) => a.expiry.getTime() - b.expiry.getTime(),
-    permissions: (a, b) => a.permissions.join(', ').localeCompare(b.permissions.join(', ')),
-  }
+    const compareFns: Record<typeof sortBy, (a: any, b: any) => number> = {
+      key: (a, b) => a.partialKey.localeCompare(b.partialKey),
+      email: (a, b) => a.email.localeCompare(b.email),
+      expiry: (a, b) => a.expiry.getTime() - b.expiry.getTime(),
+      permissions: (a, b) => a.permissions.join(', ').localeCompare(b.permissions.join(', ')),
+    }
 
-  filtered.sort((a, b) => {
-    const res = compareFns[sortBy](a, b)
-    return sortDirection === 'asc' ? res : -res
-  })
+    filtered.sort((a, b) => {
+      const res = compareFns[sortBy](a, b)
+      return sortDirection === 'asc' ? res : -res
+    })
 
-  return filtered
-}, [apiKeys, search, sortBy, sortDirection])
-
+    return filtered
+  }, [apiKeys, search, sortBy, sortDirection])
 
   const isLimitedPlan = plan === 'Essentials' || plan === 'Premium'
 
@@ -266,34 +264,34 @@ const sortedFilteredKeys = useMemo(() => {
       <TableContainer component={Paper}>
         <Table size="small">
           <TableHead>
-  <TableRow>
-    <TableCell
-      onClick={() => handleSort('key')}
-      sx={{ cursor: 'pointer', userSelect: 'none' }}
-    >
-      Key {sortBy === 'key' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
-    </TableCell>
-    <TableCell
-      onClick={() => handleSort('email')}
-      sx={{ cursor: 'pointer', userSelect: 'none' }}
-    >
-      Email {sortBy === 'email' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
-    </TableCell>
-    <TableCell
-      onClick={() => handleSort('expiry')}
-      sx={{ cursor: 'pointer', userSelect: 'none' }}
-    >
-      Expiry {sortBy === 'expiry' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
-    </TableCell>
-    <TableCell
-      onClick={() => handleSort('permissions')}
-      sx={{ cursor: 'pointer', userSelect: 'none' }}
-    >
-      Permissions {sortBy === 'permissions' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
-    </TableCell>
-    <TableCell>Action</TableCell>
-  </TableRow>
-</TableHead>
+            <TableRow>
+              <TableCell
+                onClick={() => handleSort('key')}
+                sx={{ cursor: 'pointer', userSelect: 'none' }}
+              >
+                Key {sortBy === 'key' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
+              </TableCell>
+              <TableCell
+                onClick={() => handleSort('email')}
+                sx={{ cursor: 'pointer', userSelect: 'none' }}
+              >
+                Email {sortBy === 'email' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
+              </TableCell>
+              <TableCell
+                onClick={() => handleSort('expiry')}
+                sx={{ cursor: 'pointer', userSelect: 'none' }}
+              >
+                Expiry {sortBy === 'expiry' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
+              </TableCell>
+              <TableCell
+                onClick={() => handleSort('permissions')}
+                sx={{ cursor: 'pointer', userSelect: 'none' }}
+              >
+                Permissions {sortBy === 'permissions' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
+              </TableCell>
+              <TableCell>Action</TableCell>
+            </TableRow>
+          </TableHead>
 
           <TableBody>
             {sortedFilteredKeys.length === 0 ? (
@@ -334,7 +332,7 @@ const sortedFilteredKeys = useMemo(() => {
           component="div"
           count={sortedFilteredKeys.length}
           page={page}
-          onPageChange={(e, newPage) => setPage(newPage)}
+          onPageChange={(_, newPage) => setPage(newPage)}
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={(e) => {
             setRowsPerPage(parseInt(e.target.value, 10))
@@ -461,7 +459,10 @@ const sortedFilteredKeys = useMemo(() => {
       </Dialog>
 
       {/* Delete Confirmation Dialog */}
-      <Dialog open={confirmDelete.open} onClose={() => setConfirmDelete({ open: false, partialKey: null, email: null })}>
+      <Dialog
+        open={confirmDelete.open}
+        onClose={() => setConfirmDelete({ open: false, partialKey: null, email: null })}
+      >
         <DialogTitle>Confirm Deletion</DialogTitle>
         <DialogContent>
           <Typography>Are you sure you want to delete this API key?</Typography>

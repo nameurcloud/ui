@@ -47,7 +47,7 @@ export default function Names() {
   const [searchQuery, setSearchQuery] = useState('')
   const [userProfile, setUserProfile] = useState<any>()
   const [loadingConfig, setLoadingConfig] = useState(true)
-  const [loadingNames, setLoadingNames] = useState(true)
+
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
 
@@ -88,13 +88,10 @@ export default function Names() {
   useEffect(() => {
     const fetchNames = async () => {
       try {
-        setLoadingNames(true)
         const names = await getName()
         setGeneratedNames(names)
       } catch (error) {
         console.error('Error fetching names:', error)
-      } finally {
-        setLoadingNames(false)
       }
     }
     fetchNames()
