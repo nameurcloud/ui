@@ -25,6 +25,7 @@ import {
   InputAdornment,
   IconButton,
   TablePagination,
+  Stack,
 } from '@mui/material'
 import { useEffect, useState, useMemo } from 'react'
 import { useAuthGuard } from '../../hooks/useAuthGuard'
@@ -32,7 +33,6 @@ import { CloudConfig, getUserConfigPattern } from '../../hooks/config'
 import { GeneratedName, setName, getName } from '../../hooks/names'
 import { getUserProfile } from '../../hooks/user'
 import { useNotification } from '../../context/NotificationContext'
-import Grid from '@mui/material/Grid'
 
 export default function Names() {
   useAuthGuard()
@@ -50,7 +50,6 @@ export default function Names() {
 
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
-
   const [orderBy, setOrderBy] = useState<keyof GeneratedName>('datetime')
   const [order, setOrder] = useState<'asc' | 'desc'>('desc')
 
@@ -122,13 +121,12 @@ export default function Names() {
       Mode: row.mode,
       Status: row.status,
     }))
-
     const worksheet = XLSX.utils.json_to_sheet(exportData)
     const workbook = XLSX.utils.book_new()
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Generated Names')
-
     XLSX.writeFile(workbook, 'GeneratedNames.xlsx')
   }
+
   const handleGenerate = async () => {
     if (!generatedName) return
     const newEntry: GeneratedName = {
@@ -142,7 +140,6 @@ export default function Names() {
     try {
       const response = await setName(newEntry)
       if (!response.status) throw new Error('Failed to generate name.')
-
       const refreshedNames = await getName()
       setGeneratedNames(refreshedNames)
       showNotification(`Successfully generated name ${response.status}`, 'success')
@@ -197,211 +194,211 @@ export default function Names() {
   }
 
   return (
-    <Box sx={{ p: 4, height: '100%' }}>
-      <Grid container spacing={10}>
-        <Grid>
-          <Box sx={{ minWidth: 500, width: '100%' }}>
-            <FormControl fullWidth margin="dense" size="small">
-              <InputLabel>Cloud Provider</InputLabel>
-              <Select
-                value={selectedProvider}
-                label="Cloud Provider"
-                onChange={(e) => {
-                  setSelectedProvider(e.target.value)
-                  setSelectedRegion('')
-                  setSelectedResource('')
-                  setSelectedEnvironment('')
-                }}
-              >
-                {Object.keys(data!).map((provider) => (
-                  <MenuItem key={provider} value={provider}>
-                    {provider}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <FormControl fullWidth margin="dense" size="small" disabled={!selectedProvider}>
-              <InputLabel>Region</InputLabel>
-              <Select
-                label="Region"
-                value={selectedRegion}
-                onChange={(e) => setSelectedRegion(e.target.value)}
-              >
-                {current?.regions.map((region) => (
-                  <MenuItem key={region.code} value={region.name}>
-                    {region.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <FormControl fullWidth margin="dense" size="small" disabled={!selectedProvider}>
-              <InputLabel>Resource</InputLabel>
-              <Select
-                label="Resource"
-                margin="dense"
-                size="small"
-                value={selectedResource}
-                onChange={(e) => setSelectedResource(e.target.value)}
-              >
-                {current?.resources.map((res) => (
-                  <MenuItem key={res.code} value={res.name}>
-                    {res.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <FormControl fullWidth margin="dense" size="small" disabled={!selectedProvider}>
-              <InputLabel>Environment</InputLabel>
-              <Select
-                label="Environment"
-                value={selectedEnvironment}
-                onChange={(e) => setSelectedEnvironment(e.target.value)}
-              >
-                {current?.environments.map((env) => (
-                  <MenuItem key={env.code} value={env.name}>
-                    {env.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            {/* Preview Pattern Box */}
-            <Box sx={{ mt: 1, mb: 2 }}>
-              <Box
-                component="code"
-                sx={(theme) => ({
-                  display: 'block',
-
-                  px: 1.5,
-                  py: 1.25,
-                  borderRadius: theme.shape.borderRadius,
-                  fontFamily: 'Monospace',
-                  fontSize: theme.typography.body2.fontSize,
-                  border: '1px solid',
-                  borderColor: theme.palette.divider,
-                  bgcolor:
-                    theme.palette.mode === 'dark'
-                      ? theme.palette.grey[900]
-                      : theme.palette.grey[100],
-                  color:
-                    theme.palette.mode === 'dark'
-                      ? theme.palette.common.white
-                      : theme.palette.common.black,
-
-                  lineHeight: 'normal',
-                  overflowX: 'auto',
-                })}
-              >
-                {generatedName || 'Select values to preview name pattern'}
-              </Box>
-            </Box>
-
-            <Box sx={{ mt: 2 }}>
-              <Button
-                variant="contained"
-                fullWidth
-                disabled={
-                  !selectedProvider || !selectedRegion || !selectedResource || !selectedEnvironment
-                }
-                onClick={handleGenerate}
-              >
-                Generate Name
-              </Button>
-            </Box>
-          </Box>
-        </Grid>
-
-        <Grid width="60%">
-          <Box>
-            <Box
-              sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 0 }}
+    <Box sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
+      <Stack
+        direction={{ xs: 'column', md: 'row' }}
+        spacing={4}
+        alignItems="flex-start"
+        justifyContent="space-between"
+      >
+        {/* Form section */}
+        <Box sx={{ width: { xs: '100%', md: '40%' } }}>
+          <FormControl fullWidth margin="dense" size="small">
+            <InputLabel>Cloud Provider</InputLabel>
+            <Select
+              value={selectedProvider}
+              label="Cloud Provider"
+              onChange={(e) => {
+                setSelectedProvider(e.target.value)
+                setSelectedRegion('')
+                setSelectedResource('')
+                setSelectedEnvironment('')
+              }}
             >
-              <TextField
-                sx={{ flex: 1, mr: 2 }}
-                margin="dense"
-                size="small"
-                placeholder="Search names..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                InputProps={{
-                  endAdornment: searchQuery && (
-                    <InputAdornment position="end">
-                      <IconButton onClick={() => setSearchQuery('')}>
-                        <ClearIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
+              {Object.keys(data!).map((provider) => (
+                <MenuItem key={provider} value={provider}>
+                  {provider}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-              <Button
-                variant="outlined"
-                startIcon={<FileDownloadIcon />}
-                onClick={handleExportToExcel}
-              >
-                Export
-              </Button>
+          <FormControl fullWidth margin="dense" size="small" disabled={!selectedProvider}>
+            <InputLabel>Region</InputLabel>
+            <Select
+              label="Region"
+              value={selectedRegion}
+              onChange={(e) => setSelectedRegion(e.target.value)}
+            >
+              {current?.regions.map((region) => (
+                <MenuItem key={region.code} value={region.name}>
+                  {region.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <FormControl fullWidth margin="dense" size="small" disabled={!selectedProvider}>
+            <InputLabel>Resource</InputLabel>
+            <Select
+              label="Resource"
+              value={selectedResource}
+              onChange={(e) => setSelectedResource(e.target.value)}
+            >
+              {current?.resources.map((res) => (
+                <MenuItem key={res.code} value={res.name}>
+                  {res.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <FormControl fullWidth margin="dense" size="small" disabled={!selectedProvider}>
+            <InputLabel>Environment</InputLabel>
+            <Select
+              label="Environment"
+              value={selectedEnvironment}
+              onChange={(e) => setSelectedEnvironment(e.target.value)}
+            >
+              {current?.environments.map((env) => (
+                <MenuItem key={env.code} value={env.name}>
+                  {env.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <Box sx={{ mt: 2 }}>
+            <Box
+              component="code"
+              sx={(theme) => ({
+                display: 'block',
+                px: 1.5,
+                py: 1.25,
+                borderRadius: theme.shape.borderRadius,
+                fontFamily: 'Monospace',
+                fontSize: theme.typography.body2.fontSize,
+                border: '1px solid',
+                borderColor: theme.palette.divider,
+                bgcolor:
+                  theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.grey[100],
+                color:
+                  theme.palette.mode === 'dark'
+                    ? theme.palette.common.white
+                    : theme.palette.common.black,
+              })}
+            >
+              {generatedName || 'Select values to preview name pattern'}
             </Box>
 
-            <TableContainer component={Paper} sx={{ maxHeight: 450, mt: 1, overflow: 'auto' }}>
-              <Table stickyHeader size="small">
-                <TableHead>
-                  <TableRow>
-                    {['name', 'datetime', 'user', 'mode'].map((column) => (
-                      <TableCell key={column} sortDirection={orderBy === column ? order : false}>
-                        <TableSortLabel
-                          active={orderBy === column}
-                          direction={orderBy === column ? order : 'asc'}
-                          onClick={() => handleSort(column as keyof GeneratedName)}
-                        >
-                          {column.charAt(0).toUpperCase() + column.slice(1)}
-                        </TableSortLabel>
-                      </TableCell>
-                    ))}
-                    <TableCell>Status</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {sortedNames
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => (
-                      <TableRow key={`${row.name}-${row.datetime}`}>
-                        <TableCell>{row.name}</TableCell>
-                        <TableCell>{formatDate(row.datetime)}</TableCell>
-                        <TableCell>{row.user}</TableCell>
-                        <TableCell>{row.mode}</TableCell>
-                        <TableCell>
-                          {row.status === 'submitted' && (
-                            <CheckCircleIcon sx={{ color: green[600] }} />
-                          )}
-                          {row.status === 'failure' && <ErrorIcon sx={{ color: red[600] }} />}
-                          {row.status === 'pending' && (
-                            <HourglassBottomIcon sx={{ color: grey[600] }} />
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={sortedNames.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={(_, newPage) => setPage(newPage)}
-              onRowsPerPageChange={(e) => {
-                setRowsPerPage(parseInt(e.target.value, 10))
-                setPage(0)
+            <Button
+              variant="contained"
+              fullWidth
+              sx={{ mt: 2 }}
+              disabled={
+                !selectedProvider || !selectedRegion || !selectedResource || !selectedEnvironment
+              }
+              onClick={handleGenerate}
+            >
+              Generate Name
+            </Button>
+          </Box>
+        </Box>
+
+        {/* Table section */}
+        <Box sx={{ width: { xs: '100%', md: '60%' } }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' },
+              alignItems: { sm: 'center' },
+              justifyContent: 'space-between',
+              gap: 2,
+              mb: 1,
+            }}
+          >
+            <TextField
+              fullWidth
+              margin="dense"
+              size="small"
+              placeholder="Search names..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              InputProps={{
+                endAdornment: searchQuery && (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setSearchQuery('')}>
+                      <ClearIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
               }}
             />
+            <Button
+              variant="outlined"
+              startIcon={<FileDownloadIcon />}
+              onClick={handleExportToExcel}
+              sx={{ whiteSpace: 'nowrap' }}
+            >
+              Export
+            </Button>
           </Box>
-        </Grid>
-      </Grid>
+
+          <TableContainer component={Paper} sx={{ maxHeight: 450 }}>
+            <Table stickyHeader size="small">
+              <TableHead>
+                <TableRow>
+                  {['name', 'datetime', 'user', 'mode'].map((column) => (
+                    <TableCell key={column} sortDirection={orderBy === column ? order : false}>
+                      <TableSortLabel
+                        active={orderBy === column}
+                        direction={orderBy === column ? order : 'asc'}
+                        onClick={() => handleSort(column as keyof GeneratedName)}
+                      >
+                        {column.charAt(0).toUpperCase() + column.slice(1)}
+                      </TableSortLabel>
+                    </TableCell>
+                  ))}
+                  <TableCell>Status</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {sortedNames
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => (
+                    <TableRow key={`${row.name}-${row.datetime}`}>
+                      <TableCell>{row.name}</TableCell>
+                      <TableCell>{formatDate(row.datetime)}</TableCell>
+                      <TableCell>{row.user}</TableCell>
+                      <TableCell>{row.mode}</TableCell>
+                      <TableCell>
+                        {row.status === 'submitted' && (
+                          <CheckCircleIcon sx={{ color: green[600] }} />
+                        )}
+                        {row.status === 'failure' && <ErrorIcon sx={{ color: red[600] }} />}
+                        {row.status === 'pending' && (
+                          <HourglassBottomIcon sx={{ color: grey[600] }} />
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={sortedNames.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={(_, newPage) => setPage(newPage)}
+            onRowsPerPageChange={(e) => {
+              setRowsPerPage(parseInt(e.target.value, 10))
+              setPage(0)
+            }}
+          />
+        </Box>
+      </Stack>
     </Box>
   )
 }
