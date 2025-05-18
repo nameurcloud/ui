@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Box, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
+import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { Button, Box, Paper, Typography, useMediaQuery, useTheme } from '@mui/material'
 
-const HEADER_HEIGHT = 65;
+const HEADER_HEIGHT = 65
 
 const Home: React.FC = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-   useEffect(() => {
-    document.title = "Home";
-  }, []);
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  useEffect(() => {
+    document.title = 'Home'
+  }, [])
 
   return (
     <Box
@@ -46,14 +46,8 @@ const Home: React.FC = () => {
 
             background: 'linear-gradient(135deg, #673ab7, #3f51b5, #2196f3, #00bcd4)',
             backgroundSize: '400% 400%',
-
           }}
-        >
-
-
-
-        </Paper>
-
+        ></Paper>
 
         <Paper
           sx={{
@@ -90,12 +84,10 @@ const Home: React.FC = () => {
             </Typography>
 
             <Typography sx={{ mb: 1, fontSize: '.9rem' }} color="text.secondary">
-              We generate{' '}
-              <span style={{ color: '#1565c0', fontWeight: 600 }}>unique names</span> for
-              your infrastructure components, helping you{' '}
+              We generate <span style={{ color: '#1565c0', fontWeight: 600 }}>unique names</span>{' '}
+              for your infrastructure components, helping you{' '}
               <span style={{ fontWeight: 500 }}>organize</span> and{' '}
-              <span style={{ fontWeight: 500 }}>manage</span> your cloud resources more
-              efficiently.
+              <span style={{ fontWeight: 500 }}>manage</span> your cloud resources more efficiently.
             </Typography>
 
             <Typography sx={{ mb: 1, fontSize: '.9rem' }} color="text.secondary">
@@ -146,9 +138,9 @@ const Home: React.FC = () => {
             </Typography>
 
             <Typography sx={{ fontSize: '.9rem' }} color="text.secondary">
-              <strong style={{ color: '#388e3c' }}>Yes, you heard it right!</strong> We
-              offer flexible options so you can define a naming strategy that matches your
-              team's style and standards.
+              <strong style={{ color: '#388e3c' }}>Yes, you heard it right!</strong> We offer
+              flexible options so you can define a naming strategy that matches your team's style
+              and standards.
             </Typography>
 
             <Button
@@ -170,8 +162,8 @@ const Home: React.FC = () => {
                   boxShadow: '0 6px 18px rgba(156, 39, 176, 0.6)',
                 },
               }}
-              component={Link} to="register"
-
+              component={Link}
+              to="register"
             >
               ✍️ Sign Up Now
             </Button>
@@ -180,6 +172,6 @@ const Home: React.FC = () => {
       </Box>
     </Box>
   )
-};
+}
 
-export default Home;
+export default Home

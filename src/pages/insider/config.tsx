@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react'
-import { useNotification } from '../../context/NotificationContext';
+import { useNotification } from '../../context/NotificationContext'
 import LockIcon from '@mui/icons-material/Lock'
-import {
-  getUserConfigPattern,
-  CloudConfig,
-  setUserConfigPattern
-} from '../../hooks/config'
+import { getUserConfigPattern, CloudConfig, setUserConfigPattern } from '../../hooks/config'
 import {
   Accordion,
   AccordionSummary,
@@ -25,12 +21,13 @@ import {
   useTheme,
   Box,
   Button,
-  Skeleton
+  Skeleton,
 } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { useAuthGuard } from '../../hooks/useAuthGuard'
 import { getPlan } from '../../hooks/plan'
+// Your imports stay the same
 
 type CloudCategory = {
   name: string
@@ -53,7 +50,7 @@ type EditedItem = {
 
 export default function Config() {
   useAuthGuard()
-  const { showNotification } = useNotification();
+  const { showNotification } = useNotification()
 
   useEffect(() => {
     document.title = 'Configuration'
@@ -75,15 +72,12 @@ export default function Config() {
     fetchPlan()
   }, [])
 
-
-
-
-  const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
+  const capitalize = (str: string) => str.charAt(0).toLowerCase() + str.slice(1)
 
   useEffect(() => {
     const fetchConfig = async () => {
       try {
-        const jsonout:CloudConfig = await getUserConfigPattern()
+        const jsonout: CloudConfig = await getUserConfigPattern()
         setData(jsonout)
       } catch (error) {
         console.error('Error loading config:', error)
@@ -106,20 +100,16 @@ export default function Config() {
     }
   }
 
-  const handleCodeChange = (
-    category: keyof CloudProviderData,
-    index: number,
-    newCode: string
-  ) => {
+  const handleCodeChange = (category: keyof CloudProviderData, index: number, newCode: string) => {
     if (!data) return
 
     const originalCode = data[selectedProvider][category][index].code
     const updated = structuredClone(data)
-    updated[selectedProvider][category][index].code = newCode.toUpperCase()
+    updated[selectedProvider][category][index].code = newCode.toLowerCase()
     setData(updated)
 
     const key = `${selectedProvider}-${category}-${index}`
-    const changed = newCode.toUpperCase() !== originalCode
+    const changed = newCode.toLowerCase() !== originalCode
     setEdited((prev) => ({
       ...prev,
       [key]: changed
@@ -127,16 +117,16 @@ export default function Config() {
             cloud: selectedProvider,
             name: updated[selectedProvider][category][index].name,
             before: originalCode,
-            after: newCode.toUpperCase(),
-            category
+            after: newCode.toLowerCase(),
+            category,
           }
-        : undefined
+        : undefined,
     }))
   }
 
   const renderAccordion = (category: keyof CloudProviderData) => {
     if (!data) return null
-    const items = data[selectedProvider][category].filter((item:any) =>
+    const items = data[selectedProvider][category].filter((item: any) =>
       (search[category] || '') === ''
         ? true
         : item.name.toLowerCase().includes(search[category].toLowerCase())
@@ -155,22 +145,20 @@ export default function Config() {
             fullWidth
             placeholder={`Search ${category}`}
             value={search[category] || ''}
-            onChange={(e) =>
-              setSearch((prev) => ({ ...prev, [category]: e.target.value }))
-            }
+            onChange={(e) => setSearch((prev) => ({ ...prev, [category]: e.target.value }))}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
                   <SearchIcon fontSize="small" />
                 </InputAdornment>
-              )
+              ),
             }}
             sx={{ mb: 1 }}
           />
           <TableContainer component={Paper} variant="outlined">
             <Table size="small">
               <TableBody>
-                {items.map((item:any, index:any) => {
+                {items.map((item: any, index: any) => {
                   const editKey = `${selectedProvider}-${category}-${index}`
                   const isChanged = Boolean(edited[editKey])
                   return (
@@ -180,12 +168,10 @@ export default function Config() {
                         <TextField
                           size="small"
                           value={item.code}
-                          onChange={(e) =>
-                            handleCodeChange(category, index, e.target.value)
-                          }
+                          onChange={(e) => handleCodeChange(category, index, e.target.value)}
                           inputProps={{
                             maxLength: 2,
-                            style: { textAlign: 'center' }
+                            style: { textAlign: 'center' },
                           }}
                           sx={{
                             width: 60,
@@ -193,7 +179,7 @@ export default function Config() {
                               ? theme.palette.mode === 'dark'
                                 ? '#554'
                                 : '#fff3cd'
-                              : 'inherit'
+                              : 'inherit',
                           }}
                         />
                       </TableCell>
@@ -219,7 +205,9 @@ export default function Config() {
     )
   }
 
-  const categories = Object.keys(data?.[selectedProvider] || {}) as (keyof CloudProviderData)[]
+  const categories = Object.keys(data?.[selectedProvider] || {}).filter(
+    (key): key is keyof CloudProviderData => key !== 'code'
+  )
   const changedItems = Object.entries(edited)
     .filter(([, val]) => val)
     .map(([, val]) => val as EditedItem)
@@ -232,7 +220,7 @@ export default function Config() {
           height: '60vh',
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
         }}
       >
         <Paper
@@ -242,12 +230,10 @@ export default function Config() {
             maxWidth: 400,
             textAlign: 'center',
             backgroundColor: theme.palette.mode === 'dark' ? '#2c2c2c' : '#fafafa',
-            borderRadius: 3
+            borderRadius: 3,
           }}
         >
-          <LockIcon
-            sx={{ fontSize: 48, color: theme.palette.text.secondary, mb: 2 }}
-          />
+          <LockIcon sx={{ fontSize: 48, color: theme.palette.text.secondary, mb: 2 }} />
           <Typography variant="h6" color="text.secondary" gutterBottom>
             Plan Name: <strong>{localUserPlan}</strong>
           </Typography>
@@ -263,38 +249,36 @@ export default function Config() {
 
   return (
     <Box sx={{ p: 2 }}>
-
-
-      
-
-
-        <ToggleButtonGroup
-          fullWidth
-          value={selectedProvider}
-          exclusive
-          onChange={(_, newVal) => {
-            if (newVal) {
-              setSelectedProvider(newVal)
-              setSearch({})
-            }
-          }}
-          color="primary"
-        >
-          {Object.keys(data).map((provider) => (
+      <ToggleButtonGroup
+        fullWidth
+        value={selectedProvider}
+        exclusive
+        onChange={(_, newVal) => {
+          if (newVal) {
+            setSelectedProvider(newVal)
+            setSearch({})
+          }
+        }}
+        color="primary"
+      >
+        {(Object.keys(data) as (keyof CloudConfig)[]).map((provider) => {
+          const providerCode = data[provider].code?.toLowerCase?.() || ''
+          return (
             <ToggleButton
               key={provider}
               value={provider}
               sx={{ textTransform: 'none', fontWeight: 600 }}
             >
-              {provider}
+              {provider} {providerCode && `(${providerCode})`}
             </ToggleButton>
-          ))}
-        </ToggleButtonGroup>
+          )
+        })}
+      </ToggleButtonGroup>
 
-       
       <Box sx={{ width: '100%', mb: 4 }}>
         {categories.map((category) => renderAccordion(category))}
       </Box>
+
       <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
         <Button
           variant="contained"
@@ -305,7 +289,8 @@ export default function Config() {
           Save All Changes
         </Button>
       </Box>
-      <Box sx={{ width: '100%' }}>
+
+      <Box sx={{ width: '100%', mt: 2 }}>
         <Typography variant="subtitle1" gutterBottom>
           Changed Records
         </Typography>
@@ -313,7 +298,7 @@ export default function Config() {
           <Table size="small">
             <TableHead
               sx={{
-                backgroundColor: theme.palette.mode === 'dark' ? '#333' : '#f5f5f5'
+                backgroundColor: theme.palette.mode === 'dark' ? '#333' : '#f5f5f5',
               }}
             >
               <TableRow>
@@ -335,11 +320,8 @@ export default function Config() {
                     <TableCell
                       sx={{
                         fontSize: '0.8rem',
-                        color:
-                          item.before !== item.after
-                            ? theme.palette.warning.main
-                            : 'inherit',
-                        fontWeight: 500
+                        color: item.before !== item.after ? theme.palette.warning.main : 'inherit',
+                        fontWeight: 500,
                       }}
                     >
                       {item.after}

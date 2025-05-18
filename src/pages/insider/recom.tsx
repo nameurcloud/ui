@@ -1,17 +1,17 @@
-import { useEffect } from "react";
-import { useAuthGuard } from "../../hooks/useAuthGuard";
+import { useEffect } from 'react'
+import { useAuthGuard } from '../../hooks/useAuthGuard'
 
 export default function Recom() {
-  useAuthGuard(); 
+  useAuthGuard()
 
   useEffect(() => {
-    document.title = "Recommendations";
-  }, []);
+    document.title = 'Recommendations'
+  }, [])
 
   return (
     <div style={{ padding: 20 }}>
       <h1>Recommendation</h1>
       <p>Welcome back! </p>
     </div>
-  );
+  )
 }

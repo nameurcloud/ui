@@ -1,10 +1,10 @@
-import React from 'react';
-import { Tooltip } from '@mui/material';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import React from 'react'
+import { Tooltip } from '@mui/material'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 
 interface LabelWithTooltipProps {
-  label: string;
-  message: string;
+  label: string
+  message: string
 }
 
 const LabelWithTooltip: React.FC<LabelWithTooltipProps> = ({ label, message }) => (
@@ -14,6 +14,6 @@ const LabelWithTooltip: React.FC<LabelWithTooltipProps> = ({ label, message }) =
       <InfoOutlinedIcon fontSize="small" style={{ marginLeft: 4, cursor: 'pointer' }} />
     </Tooltip>
   </div>
-);
+)
 
-export default LabelWithTooltip;
+export default LabelWithTooltip

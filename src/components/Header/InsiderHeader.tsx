@@ -200,20 +200,21 @@ const Header: React.FC = () => {
   )
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box>
       <AppBar
         position="static"
-        elevation={0}
+        elevation={3}
         sx={{
-          background: theme === 'dark' ? '#000' : 'linear-gradient(45deg,rgba(147, 20, 225, 0.1) 10%,rgba(147, 20, 225, 0.1) 99%)',
+          background: theme === 'dark' ? '#000' : '#FFFFFF',
+
+          borderBottom: '1px solid',
+          borderColor: 'divider', // theme-aware, works with light/dark modes
 
           color: theme === 'dark' ? '#fff' : '#000',
 
-        height: 60,
-        paddingBottom : 0
-        
+          height: 60,
+          paddingBottom: 0,
         }}
-        
       >
         <Toolbar>
           <IconButton
@@ -248,11 +249,23 @@ const Header: React.FC = () => {
             {DrawerList}
           </Drawer>
           <IconButton size="small" edge="start" color="inherit" aria-label="logo" sx={{ mr: 2 }}>
-            <img src="/images/logo.png" style={{ height: '30px' }} alt="Logo" />
+            <img src="/images/logo.png" style={{ height: '23px' }} alt="Logo" />
           </IconButton>
 
           <Typography component="div" sx={{ flexGrow: 1 }}>
-            Name Your Cloud
+            <Typography
+              variant="h6"
+              fontWeight="bold"
+              sx={{
+                fontFamily: '"Quicksand", sans-serif',
+              }}
+            >
+              <span style={{ color: '#FF9933' /* Saffron */ }}>Name </span>
+              <span style={{ color: '#5588cf' /* Black, as white won't show on white bg */ }}>
+                Your{' '}
+              </span>
+              <span style={{ color: '#138808' /* Green */ }}>Cloud</span>
+            </Typography>
           </Typography>
 
           <Box sx={{ flexGrow: 1 }} />
@@ -261,11 +274,9 @@ const Header: React.FC = () => {
               {theme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
             </IconButton>
 
-            <IconButton size="small" color="inherit">
-              <Badge>
-                <NotificationMenu />
-              </Badge>
-            </IconButton>
+            <Badge>
+              <NotificationMenu />
+            </Badge>
 
             <IconButton
               size="small"
@@ -282,7 +293,6 @@ const Header: React.FC = () => {
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="small"
-
               aria-label="show more"
               aria-controls={mobileMenuId}
               aria-haspopup="true"

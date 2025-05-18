@@ -97,9 +97,9 @@ const Register: React.FC = () => {
       setSnackbar({ open: true, message: 'Network error. Please try again.', severity: 'error' })
     }
   }
-   useEffect(() => {
-    document.title = "Register";
-  }, []);
+  useEffect(() => {
+    document.title = 'Register'
+  }, [])
   return (
     <Box
       sx={{

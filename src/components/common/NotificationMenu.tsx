@@ -1,5 +1,5 @@
 // components/NotificationMenu.tsx
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   IconButton,
   Badge,
@@ -7,41 +7,46 @@ import {
   MenuItem,
   ListItemText,
   ListItemIcon,
-  Typography
-} from '@mui/material';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import { useNotification } from '../../context/NotificationContext';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import ErrorIcon from '@mui/icons-material/Error';
-import InfoIcon from '@mui/icons-material/Info';
-import WarningIcon from '@mui/icons-material/Warning';
+  Typography,
+} from '@mui/material'
+import NotificationsIcon from '@mui/icons-material/Notifications'
+import { useNotification } from '../../context/NotificationContext'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import ErrorIcon from '@mui/icons-material/Error'
+import InfoIcon from '@mui/icons-material/Info'
+import WarningIcon from '@mui/icons-material/Warning'
 
 const getIcon = (severity: string) => {
   switch (severity) {
-    case 'success': return <CheckCircleIcon color="success" />;
-    case 'error': return <ErrorIcon color="error" />;
-    case 'info': return <InfoIcon color="info" />;
-    case 'warning': return <WarningIcon color="warning" />;
-    default: return null;
+    case 'success':
+      return <CheckCircleIcon color="success" />
+    case 'error':
+      return <ErrorIcon color="error" />
+    case 'info':
+      return <InfoIcon color="info" />
+    case 'warning':
+      return <WarningIcon color="warning" />
+    default:
+      return null
   }
-};
+}
 
 const NotificationMenu = () => {
-  const { notifications, removeNotification } = useNotification();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  const { notifications, removeNotification } = useNotification()
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
 
   const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
 
   const handleDismiss = (id: number) => {
-    removeNotification(id);
-  };
+    removeNotification(id)
+  }
 
   return (
     <>
@@ -76,7 +81,7 @@ const NotificationMenu = () => {
         )}
       </Menu>
     </>
-  );
-};
+  )
+}
 
-export default NotificationMenu;
+export default NotificationMenu
