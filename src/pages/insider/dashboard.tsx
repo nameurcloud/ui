@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useAuthGuard } from '../../hooks/useAuthGuard'
 import { Gauge } from '@mui/x-charts/Gauge'
 import { Box, Card, CardActions, CardContent, Paper, Typography } from '@mui/material'
-import { BarChart, LineChart, PieChart } from '@mui/x-charts'
+import { BarChart, PieChart } from '@mui/x-charts'
 import { getDashboardData, DashData } from '../../hooks/dashboard'
 
 export default function DashboardLayout() {
