@@ -29,7 +29,6 @@ import { openRazorpay } from '../../hooks/payment'
 import { getUserProfile } from '../../hooks/user'
 import { getPlan } from '../../hooks/plan'
 import subscriptionOptions from '../../components/common/subscriptionOptions'
-import { margin } from '@mui/system'
 
 export default function Payment() {
   useAuthGuard()
@@ -92,7 +91,7 @@ export default function Payment() {
   }, [])
  
 
-const verifyPayment = async (orderId: string) => {
+const verifyPayment = async (_orderId: string) => {
   // Simulate API call delay
   return new Promise<{ status: string }>((resolve) =>
     setTimeout(() => resolve({ status: 'captured' }), 1500)

@@ -25,6 +25,7 @@ export default function Profile() {
         try {
           const result = await getPlan()
           setPlan(result)
+          console.log(plan)
         } catch (err) {
           console.error('Failed to fetch plan:', err)
         } finally {
