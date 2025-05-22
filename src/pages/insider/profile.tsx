@@ -3,6 +3,7 @@ import { useAuthGuard } from '../../hooks/useAuthGuard'
 import { getUserProfile } from '../../hooks/user'
 import { useTheme } from '@mui/material/styles'
 import { Box, Skeleton } from '@mui/material'
+import { getPlan } from '../../hooks/plan'
 
 export default function Profile() {
   useAuthGuard() // Redirects if not authenticated
@@ -16,7 +17,23 @@ export default function Profile() {
   const [userProfile, setUserProfile] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [ plan, setPlan] = useState()
 
+
+  useEffect(() => {
+      const fetchPlan = async () => {
+        try {
+          const result = await getPlan()
+          setPlan(result)
+        } catch (err) {
+          console.error('Failed to fetch plan:', err)
+        } finally {
+          setLoading(false)
+        }
+      }
+      fetchPlan()
+    }, [])
+    
   useEffect(() => {
     async function fetchProfile() {
       try {

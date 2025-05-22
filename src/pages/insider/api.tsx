@@ -1,6 +1,7 @@
 import { useAuthGuard } from '../../hooks/useAuthGuard'
-import { setApiKey, getApiKeys, deleteApiKeyByPartialKeyAndEmail } from '../../hooks/api'
+import { setApiKey, getApiKeys, deleteApiKeyByPartialKeyAndEmail, GenApiKey } from '../../hooks/api'
 import { useEffect, useMemo, useState } from 'react'
+import ApiSamplePanel from '../../components/common/ApiSamplePanel'
 import {
   Box,
   Typography,
@@ -115,7 +116,7 @@ export default function Api() {
         const keysFromDb = await getApiKeys()
         const keysWithDate = keysFromDb.map((key) => ({
           ...key,
-          expiry: new Date(key.expiry),
+          expiry: key.expiry ? new Date(key.expiry) : null,
         }))
         setApiKeys(keysWithDate)
       } catch (error) {
@@ -145,17 +146,20 @@ export default function Api() {
   }
 
   const handleGenerateKey = async () => {
-    const newKey = uuidv4().replace(/-/g, '')
+    //const newKey = uuidv4().replace(/-/g, '')
+    const data:any = await GenApiKey(
+      email,
+      new Date(Date.now() + expiry * 30 * 24 * 60 * 60 * 1000),
+      permissions
+    )
+    const newKey = data
     const partialKey = `${newKey.slice(0, 4)}...${newKey.slice(-4)}`
     const newEntry = {
       id: uuidv4(),
       partialKey,
       key: newKey,
       email,
-      expiry:
-        expiry === 0
-          ? new Date('2025-06-17T07:32:38.273Z')
-          : new Date(Date.now() + expiry * 30 * 24 * 60 * 60 * 1000),
+      expiry: expiry === 0 ? null : new Date(Date.now() + expiry * 30 * 24 * 60 * 60 * 1000),
       permissions: permissions,
     }
 
@@ -244,102 +248,112 @@ export default function Api() {
         Create API Key
       </Button>
 
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
-        <TextField
-          placeholder="Search"
-          variant="outlined"
-          size="small"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Box>
+      <Box display="flex" height="100%">
+        <Box flex={3} pr={2} minWidth={900}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+            <TextField
+              placeholder="Search"
+              variant="outlined"
+              size="small"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Box>
 
-      <TableContainer component={Paper}>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell
-                onClick={() => handleSort('key')}
-                sx={{ cursor: 'pointer', userSelect: 'none' }}
-              >
-                Key {sortBy === 'key' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
-              </TableCell>
-              <TableCell
-                onClick={() => handleSort('email')}
-                sx={{ cursor: 'pointer', userSelect: 'none' }}
-              >
-                Email {sortBy === 'email' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
-              </TableCell>
-              <TableCell
-                onClick={() => handleSort('expiry')}
-                sx={{ cursor: 'pointer', userSelect: 'none' }}
-              >
-                Expiry {sortBy === 'expiry' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
-              </TableCell>
-              <TableCell
-                onClick={() => handleSort('permissions')}
-                sx={{ cursor: 'pointer', userSelect: 'none' }}
-              >
-                Permissions {sortBy === 'permissions' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
-              </TableCell>
-              <TableCell>Action</TableCell>
-            </TableRow>
-          </TableHead>
+          <TableContainer component={Paper} >
+            <Table size="small" >
+              <TableHead>
+                <TableRow >
+                  <TableCell
+                    onClick={() => handleSort('key')}
+                    sx={{ cursor: 'pointer', userSelect: 'none' }}
+                  >
+                    Key {sortBy === 'key' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleSort('email')}
+                    sx={{ cursor: 'pointer', userSelect: 'none' }}
+                  >
+                    Email {sortBy === 'email' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleSort('expiry')}
+                    sx={{ cursor: 'pointer', userSelect: 'none' }}
+                  >
+                    Expiry {sortBy === 'expiry' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
+                  </TableCell>
+                  <TableCell
+                    onClick={() => handleSort('permissions')}
+                    sx={{ cursor: 'pointer', userSelect: 'none' }}
+                  >
+                    Permissions{' '}
+                    {sortBy === 'permissions' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
+                  </TableCell>
+                  <TableCell>Action</TableCell>
+                </TableRow>
+              </TableHead>
 
-          <TableBody>
-            {sortedFilteredKeys.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={5} align="center">
-                  Create API key to integrate with your fevorate tools.
-                </TableCell>
-              </TableRow>
-            ) : (
-              sortedFilteredKeys
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((key) => (
-                  <TableRow key={key.id}>
-                    <TableCell>{key.partialKey}</TableCell>
-                    <TableCell>{key.email}</TableCell>
-                    <TableCell>{key.expiry.toLocaleString()}</TableCell>
-                    <TableCell>{key.permissions.join(', ')}</TableCell>
-                    <TableCell>
-                      <IconButton
-                        onClick={() =>
-                          setConfirmDelete({
-                            open: true,
-                            partialKey: key.partialKey,
-                            email: key.email,
-                          })
-                        }
-                        color="error"
-                      >
-                        <DeleteIcon />
-                      </IconButton>
+              <TableBody>
+                {sortedFilteredKeys.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={5} align="center">
+                      Create API key to integrate with your fevorate tools.
                     </TableCell>
                   </TableRow>
-                ))
-            )}
-          </TableBody>
-        </Table>
-        <TablePagination
-          component="div"
-          count={sortedFilteredKeys.length}
-          page={page}
-          onPageChange={(_, newPage) => setPage(newPage)}
-          rowsPerPage={rowsPerPage}
-          onRowsPerPageChange={(e) => {
-            setRowsPerPage(parseInt(e.target.value, 10))
-            setPage(0)
-          }}
-        />
-      </TableContainer>
+                ) : (
+                  sortedFilteredKeys
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((key) => (
+                      <TableRow key={key.id}>
+                        <TableCell>{key.partialKey}</TableCell>
+                        <TableCell>{key.email}</TableCell>
+                        <TableCell>{key.expiry ? key.expiry.toLocaleString() : 'Never'}</TableCell>
+                        <TableCell>{key.permissions.join(', ')}</TableCell>
+                        <TableCell>
+                          <IconButton
+                            onClick={() =>
+                              setConfirmDelete({
+                                open: true,
+                                partialKey: key.partialKey,
+                                email: key.email,
+                              })
+                            }
+                            color="error"
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                )}
+              </TableBody>
+            </Table>
+            <TablePagination
+              component="div"
+              count={sortedFilteredKeys.length}
+              page={page}
+              onPageChange={(_, newPage) => setPage(newPage)}
+              rowsPerPage={rowsPerPage}
+              onRowsPerPageChange={(e) => {
+                setRowsPerPage(parseInt(e.target.value, 10))
+                setPage(0)
+              }}
+            />
+          </TableContainer>
+        </Box>
+
+        {/* Right: Sample code panel */}
+        <Box flex={2} minWidth={100}>
+        <ApiSamplePanel />
+        </Box>
+      </Box>
 
       {/* Dialog for Creating API Key */}
       <Dialog

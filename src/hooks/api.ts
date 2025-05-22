@@ -5,9 +5,38 @@ export interface apiKey {
   partialKey: string
   key: string
   email: string
-  expiry: Date
+  expiry: Date | null
   permissions: string[]
 }
+
+
+export const GenApiKey = async (
+  email: string,
+  expiry: Date,
+  permissions: string[]
+): Promise<string> => {
+  const res = await fetch(`${API_URL}/genapkey`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      email,
+      expiry: expiry.toISOString(), // ✅ convert Date to string
+      permissions,
+    }),
+  });
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(`Failed to generate API key: ${res.status} - ${errorText}`);
+  }
+
+  const data = await res.json();
+
+  return data.apiKey; // ✅ return the actual string
+};
+
 
 export const setApiKey = async (key: apiKey) => {
   const token = localStorage.getItem('token')

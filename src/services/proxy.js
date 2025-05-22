@@ -118,23 +118,3 @@ app.use((req, res) => {
 // Start
 const PORT = process.env.SERVER_PORT
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
-
-// POST /api/create-razorpay-order
-import Razorpay from 'razorpay'
-
-const razorpay = new Razorpay({
-  key_id: 'RAZORPAY_KEY_ID',
-  key_secret: 'RAZORPAY_SECRET',
-})
-
-app.post('/api/create-razorpay-order', async (req, res) => {
-  const { amount } = req.body
-
-  const order = await razorpay.orders.create({
-    amount,
-    currency: 'INR',
-    receipt: `receipt_${Date.now()}`,
-  })
-
-  res.json(order)
-})

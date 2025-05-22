@@ -1,34 +1,66 @@
-// src/services/payment.ts
+const API_URL = import.meta.env.VITE_API_URL
+
 export const openRazorpay = async ({
   amount,
   email,
   name,
+  contact
 }: {
-  amount: number // INR in rupees
+  amount: number
   email: string
   name: string
+  contact: string
 }) => {
-  const res = await fetch('/api/create-razorpay-order', {
+  const token = localStorage.getItem('token')
+  console.log(amount * 100)
+  const res = await fetch(`${API_URL}/create-razorpay-order`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ amount: amount * 100 }), // Razorpay expects paise
+    headers: {
+      'X-App-Auth': token || '',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ amount: amount * 100 }),
   })
+
   const data = await res.json()
 
   const options = {
-    key: 'RAZORPAY_KEY_ID', // replace with your real Razorpay Key ID
+    key: 'rzp_test_0XHm0CZsK9Odpf',
     amount: data.amount,
     currency: 'INR',
-    name: 'Your Company Name',
-    description: 'Payment for Subscription',
-    image: '/logo.png',
+    name: 'Name My Cloud',
+    description: 'Payment for NMC Subscription',
+    image: '/images/logo.png',
     order_id: data.id,
-    handler: function (response: any) {
-      alert(`Payment successful! Payment ID: ${response.razorpay_payment_id}`)
+    handler: async function (response: any) {
+      try {
+        await fetch(`${API_URL}/verify-razorpay-payment`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-App-Auth': token || '',
+          },
+          body: JSON.stringify({
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+          }),
+        })
+
+      return {
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+          }
+      } catch (err) {
+        console.error('Verification error:', err)
+        alert('Error verifying payment.')
+      }
     },
     prefill: {
       name,
       email,
+      contact
     },
     theme: {
       color: '#1976d2',

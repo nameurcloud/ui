@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { registerUser } from '../services/authService'
+import subscriptionOptions from '../components/common/subscriptionOptions'
 import {
   Box,
   Button,
@@ -20,32 +21,6 @@ import LabelWithTooltip from '../components/common/LabelWithTooltip'
 
 const HEADER_HEIGHT = 65
 
-const subscriptionOptions = [
-  {
-    cost: 199,
-    plan: 'Essentials',
-    content:
-      'A plan to generate unique cloud resource names with standards we define. Your organization will have unique names every time. We have got you covered.',
-  },
-  {
-    cost: 299,
-    plan: 'Premium',
-    content:
-      'A plan to generate cloud resource names with standards you define. You have full control over the names being generated.',
-  },
-  {
-    cost: 499,
-    plan: 'Essentials+',
-    content:
-      'All the features of Essentials, plus APIs to integrate with any of your favorite tools for provisioning.',
-  },
-  {
-    cost: 699,
-    plan: 'Premium+',
-    content:
-      'All the features of Premium, plus APIs to integrate with any of your favorite tools for provisioning.',
-  },
-]
 
 const Register: React.FC = () => {
   const [firstName, setFirstName] = useState('')
@@ -201,9 +176,9 @@ const Register: React.FC = () => {
                           <Typography
                             variant="subtitle1"
                             fontFamily="monospace"
-                            sx={{ color: 'green' }}
+                            sx={{ color: 'dark green' }}
                           >
-                            &nbsp; ₹{option.cost}/mo
+                            &nbsp; ₹{option.cost}/Year
                           </Typography>
                         </Box>
                       }
