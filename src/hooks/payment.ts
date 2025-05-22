@@ -1,4 +1,5 @@
 const API_URL = import.meta.env.VITE_API_URL
+const RZORPAY_KEY_ID = import.meta.env.VITE_API_RAZORPAY_KEY_ID
 
 export const openRazorpay = async ({
   amount,
@@ -25,7 +26,7 @@ export const openRazorpay = async ({
   const data = await res.json()
 
   const options = {
-    key: 'rzp_test_0XHm0CZsK9Odpf',
+    key: RZORPAY_KEY_ID,
     amount: data.amount,
     currency: 'INR',
     name: 'Name My Cloud',
