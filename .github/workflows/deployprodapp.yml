@@ -30,8 +30,7 @@ jobs:
         run: gcloud auth configure-docker asia-east1-docker.pkg.dev
 
       - name: 📝 Write Environment Variables to .env.production
-        run: |
-          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env
+        run: echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env
 
   # Stage 2: Build Docker Image
   build:
@@ -57,14 +56,19 @@ jobs:
         run: gcloud auth configure-docker asia-east1-docker.pkg.dev
 
       - name: 📝 Write Environment Variables to .env.production
-        run: |
-          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env
+        run: echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env
 
       - name: 🛠️ Build Docker Image
         run: |
-          docker build -t asia-east1-docker.pkg.dev/nameurcloud/production/nameurcloud:$GITHUB_SHA .
-        env:
-          GITHUB_SHA: ${{ github.sha }}
+          IMAGE=asia-east1-docker.pkg.dev/nameurcloud/production/nameurcloud:${{ github.sha }}
+          docker build -t $IMAGE .
+          docker save $IMAGE > image.tar
+
+      - name: 📦 Upload Docker Image Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: docker-image
+          path: image.tar
 
   # Stage 3: Push Docker Image
   push:
@@ -86,11 +90,16 @@ jobs:
       - name: ⚙️ Authenticate Docker with Artifact Registry
         run: gcloud auth configure-docker asia-east1-docker.pkg.dev
 
-      - name: 📦 Push Docker Image
-        run: |
-          docker push asia-east1-docker.pkg.dev/nameurcloud/production/nameurcloud:$GITHUB_SHA
-        env:
-          GITHUB_SHA: ${{ github.sha }}
+      - name: 📥 Download Docker Image Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: docker-image
+
+      - name: 🗃️ Load Docker Image
+        run: docker load < image.tar
+
+      - name: 📤 Push Docker Image
+        run: docker push asia-east1-docker.pkg.dev/nameurcloud/production/nameurcloud:${{ github.sha }}
 
   # Stage 4: Deploy to Cloud Run
   deploy:
@@ -112,11 +121,8 @@ jobs:
       - name: 🚀 Deploy to Cloud Run
         run: |
           gcloud run deploy frontend \
-            --image asia-east1-docker.pkg.dev/nameurcloud/production/nameurcloud:$GITHUB_SHA \
+            --image asia-east1-docker.pkg.dev/nameurcloud/production/nameurcloud:${{ github.sha }} \
             --region asia-east1 \
             --platform managed \
             --allow-unauthenticated \
-            --set-env-vars "BACKEND_URL=${{ secrets.BACKEND_URL }},SERVER_PORT=8080,VITE_API_URL='/api',SKIP_AUTH='false'"
-        env:
-          GITHUB_SHA: ${{ github.sha }}
-          BACKEND_URL: ${{ secrets.BACKEND_URL }}
+            --set-env-vars "BACKEND_URL=${{ secrets.BACKEND_URL }},SERVER_PORT=8080,SKIP_AUTH='false'"
