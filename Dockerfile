@@ -33,8 +33,6 @@ COPY --from=builder /app/dist ./dist
 COPY ./src/services/proxy.js ./proxy.js
 
 
-COPY .env.production .env.production
-
 # Set environment variables (optional)
 ENV NODE_ENV=production
 ENV PORT=8080
