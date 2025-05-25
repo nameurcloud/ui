@@ -58,9 +58,9 @@ jobs:
       - name: 📝 Write Environment Variables to .env
         run: |
           echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env
-          echo "BACKEND_URL=https://bk.nameurcloud.com" >> .env
+          echo "BACKEND_URL=https://be.nameurcloud.com" >> .env
           echo "SERVER_PORT=8080" >> .env
-          echo "SKIP_AUTH=true" >> .enn
+          echo "SKIP_AUTH=false" >> .env
 
       - name: 🛠️ Build Docker Image
         run: |
