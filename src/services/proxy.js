@@ -34,7 +34,7 @@ app.use(cors(corsOptions))
 
 // 🔥 Backend base URL
 
-const BACKEND_URL = process.env.BACKEND_URL
+const BACKEND_URL = "/api"
 
 if (!BACKEND_URL) {
   console.error('❌ BACKEND_URL is not defined. Check your environment files.')
