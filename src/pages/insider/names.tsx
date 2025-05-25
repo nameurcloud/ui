@@ -33,7 +33,6 @@ import { CloudConfig, getUserConfigPattern } from '../../hooks/config'
 import { GeneratedName, setName, getName } from '../../hooks/names'
 import { getUserProfile } from '../../hooks/user'
 import { useNotification } from '../../context/NotificationContext'
-import { height } from '@mui/system'
 
 export default function Names() {
   useAuthGuard()
