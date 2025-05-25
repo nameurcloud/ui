@@ -33,6 +33,7 @@ import { CloudConfig, getUserConfigPattern } from '../../hooks/config'
 import { GeneratedName, setName, getName } from '../../hooks/names'
 import { getUserProfile } from '../../hooks/user'
 import { useNotification } from '../../context/NotificationContext'
+import { height } from '@mui/system'
 
 export default function Names() {
   useAuthGuard()
@@ -194,7 +195,7 @@ export default function Names() {
   }
 
   return (
-    <Box sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
+    <Box sx={{ p: { xs: 2, sm: 3, md: 1 } , minHeight: '100%'}} >
       <Stack
         direction={{ xs: 'column', md: 'row' }}
         spacing={4}
@@ -322,6 +323,7 @@ export default function Names() {
               margin="dense"
               size="small"
               placeholder="Search names..."
+             
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               InputProps={{
@@ -338,13 +340,13 @@ export default function Names() {
               variant="outlined"
               startIcon={<FileDownloadIcon />}
               onClick={handleExportToExcel}
-              sx={{ whiteSpace: 'nowrap' }}
+              
             >
               Export
             </Button>
           </Box>
 
-          <TableContainer component={Paper} sx={{ maxHeight: 450 }}>
+          <TableContainer component={Paper} sx={{ maxHeight: 465 }}>
             <Table stickyHeader size="small">
               <TableHead>
                 <TableRow>

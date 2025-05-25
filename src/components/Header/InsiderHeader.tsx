@@ -248,25 +248,11 @@ const Header: React.FC = () => {
           >
             {DrawerList}
           </Drawer>
-          <IconButton size="small" edge="start" color="inherit" aria-label="logo" sx={{ mr: 2 }}>
-            <img src="/images/logo.png" style={{ height: '23px' }} alt="Logo" />
+          <IconButton  edge="start" color="inherit" aria-label="logo"  style={{ marginTop: '-5px' }}>
+            <img src="/images/logo.png"  alt="Logo" height='50px'  />
           </IconButton>
 
-          <Typography component="div" sx={{ flexGrow: 1 }}>
-            <Typography
-              variant="h6"
-              fontWeight="bold"
-              sx={{
-                fontFamily: '"Quicksand", sans-serif',
-              }}
-            >
-              <span style={{ color: '#FF9933' /* Saffron */ }}>Name </span>
-              <span style={{ color: '#5588cf' /* Black, as white won't show on white bg */ }}>
-                Your{' '}
-              </span>
-              <span style={{ color: '#138808' /* Green */ }}>Cloud</span>
-            </Typography>
-          </Typography>
+         
 
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>

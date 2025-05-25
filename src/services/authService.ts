@@ -1,4 +1,6 @@
-const API_URL = import.meta.env.VITE_API_URL
+import dotenv from 'dotenv'
+dotenv.config({ path: `.env` })
+const API_URL = process.env.VITE_API_URL
 export const registerUser = async (
   email: string,
   password: string,

@@ -11,7 +11,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const mode = process.env.NODE_ENV || 'development'
-dotenv.config({ path: `.env.${mode}` })
+dotenv.config({ path: `.env` })
 const app = express()
 const auth = new GoogleAuth()
 
@@ -52,6 +52,7 @@ if (!BACKEND_URL) {
 async function attachIdToken(req, res, next) {
   if (process.env.SKIP_AUTH === 'true') {
     console.log('⚠️ Skipping ID token (local dev mode)')
+    console.log('🚀 BACKEND_URL used in proxy:', BACKEND_URL)
     return next()
   }
   console.log('⚠️ With ID token (Production mode)')
