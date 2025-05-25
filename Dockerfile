@@ -34,7 +34,6 @@ COPY ./src/services/proxy.js ./proxy.js
 
 
 # Set environment variables (optional)
-ENV NODE_ENV=production
 ENV PORT=8080
 
 # Expose port for Cloud Run
