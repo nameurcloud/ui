@@ -56,7 +56,9 @@ jobs:
         run: gcloud auth configure-docker asia-east1-docker.pkg.dev
 
       - name: 📝 Write Environment Variables to .env.production
-        run: echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env.production
+        run: |
+            echo "SKIP_AUTH=false" > .env.production
+            echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env.production
 
 
       - name: 🛠️ Build Docker Image
