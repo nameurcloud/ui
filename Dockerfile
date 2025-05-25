@@ -8,6 +8,10 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
+# Copy environment and source
+COPY .env.production .env
+COPY . .
+
 # Copy source and build
 COPY . .
 RUN npm run build  # Output goes to /dist
