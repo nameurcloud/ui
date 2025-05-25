@@ -55,8 +55,12 @@ jobs:
       - name: ⚙️ Authenticate Docker with Artifact Registry
         run: gcloud auth configure-docker asia-east1-docker.pkg.dev
 
-      - name: 📝 Write Environment Variables to .env.production
-        run: echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env
+      - name: 📝 Write Environment Variables to .env
+        run: |
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env
+          echo "BACKEND_URL=https://bk.nameurcloud.com" >> .env
+          echo "SERVER_PORT=8080" >> .env
+          echo "SKIP_AUTH=true" >> .enn
 
       - name: 🛠️ Build Docker Image
         run: |
@@ -75,5 +79,4 @@ jobs:
             --image $IMAGE \
             --region asia-east1 \
             --platform managed \
-            --allow-unauthenticated \
-            --set-env-vars "BACKEND_URL=${{ secrets.BACKEND_URL }}"
+            --allow-unauthenticated 
