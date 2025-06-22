@@ -37,7 +37,7 @@ app.use(cors(corsOptions))
 // 🔥 Backend base URL
 
 const BACKEND_URL = process.env.BACKEND_URL 
-
+console.log(BACKEND_URL)
 if (!BACKEND_URL) {
   console.error('❌ BACKEND_URL is not defined. Check your environment files.')
   process.exit(1)
