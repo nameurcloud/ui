@@ -5,6 +5,8 @@ import expressStaticGzip from 'express-static-gzip'
 import cors from 'cors'
 import { fileURLToPath } from 'url'
 import path from 'path'
+import dotenv from 'dotenv'
+dotenv.config()
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -34,7 +36,7 @@ app.use(cors(corsOptions))
 
 // 🔥 Backend base URL
 
-const BACKEND_URL = process.env.BACKEND_URL
+const BACKEND_URL = process.env.BACKEND_URL 
 
 if (!BACKEND_URL) {
   console.error('❌ BACKEND_URL is not defined. Check your environment files.')
@@ -50,6 +52,7 @@ async function attachIdToken(req, res, next) {
   if (process.env.SKIP_AUTH === 'true') {
     console.log('⚠️ Skipping ID token (local dev mode)')
     console.log('🚀 BACKEND_URL used in proxy:', BACKEND_URL)
+    console.log('Generating ID token for:', req.method, req.originalUrl)
     return next()
   }
   console.log('⚠️ With ID token (Production mode)')
@@ -114,5 +117,5 @@ app.use((req, res) => {
 })
 
 // Start
-const PORT = process.env.SERVER_PORT
+const PORT = process.env.SERVER_PORT 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))

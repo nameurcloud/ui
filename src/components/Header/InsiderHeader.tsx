@@ -248,7 +248,7 @@ const Header: React.FC = () => {
             {DrawerList}
           </Drawer>
           <IconButton  edge="start" color="inherit" aria-label="logo"  style={{ marginTop: '-5px' }}>
-            <img src="/images/logo.png"  alt="Logo" height='50px'  />
+            <img src="/images/logo.png"  alt="Logo" height='30px'  />
           </IconButton>
 
          

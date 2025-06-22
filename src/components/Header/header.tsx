@@ -27,7 +27,7 @@ const Header: React.FC = () => {
       >
         <Toolbar>
            <IconButton  edge="start" color="inherit" aria-label="logo"  style={{ marginTop: '-5px' , marginLeft: '5px'}}>
-            <img src="/images/logo.png"  alt="Logo" height='50px'  />
+            <img src="/images/logo.png"  alt="Logo" height='30px'  />
           </IconButton>
 
           <Typography component="div" sx={{ flexGrow: 1 }}>
