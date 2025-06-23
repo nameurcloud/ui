@@ -157,7 +157,7 @@ Write-Output "Response :" $response
   provisioner "local-exec" {
     command = <<EOT
       curl -X POST https://api.nameurcloud.com/generate \\
-        -H "Authorization: Bearer YOUR_API_KEY" \\
+        -H "X-App-Auth: YOUR_API_KEY" \\
         -d '{"name": "example-resource"}'
     EOT
   }
